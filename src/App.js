@@ -1,26 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from './containers/Header'
+import Sidebar from './containers/Sidebar'
+import Spinner from './components/Spinner'
+import Body from './containers/Body'
+
+import { connect } from 'react-redux';
+
+class App extends Component {
+
+  // Auto Login
+  componentDidMount(){
+    const token = localStorage.getItem('token')
+
+    if (token !== null) {
+      fetch('http://localhost:3000/api/auto_login', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.errors){
+          localStorage.removeItem('token')
+          alert(response.errors)
+        } else {
+          this.props.autoLogin(response)
+          this.props.loading()
+        }
+      })
+    } else {
+      this.props.loading()
+    }
+  }
+
+  render() {
+    return (
+      <div className='App'>
+        <Header />
+        <Sidebar />
+        {
+          this.props.loadState.loading ?
+            <Spinner /> :
+            <Body />
+        }
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    loadState: state.wait
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loading: () => {
+      dispatch({type: 'LOADING'})
+    },
+    autoLogin: (user) => {
+      dispatch({type: 'LOG_IN', payload: user})
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
