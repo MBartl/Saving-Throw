@@ -21,13 +21,23 @@ form {
   padding-top: 2em;
 }
 
-.actBtn {
-  float: right;
+button {
+  margin-right: 0.4em;
+  margin-left: 0.4em;
   width: 7.4em;
 }
 
-.settingsBtn {
-  width: 7.4em;
+.actBtn {
+  float: right;
+}
+
+.sideBtn {
+  padding: 10px 0;
+  margin-top: 1em;
+}
+
+#topSideBtn {
+  margin-top: 2.4em;
 }
 
 #header {

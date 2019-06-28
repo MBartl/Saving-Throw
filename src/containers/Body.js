@@ -4,6 +4,7 @@ import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 import HomePage from '../components/HomePage';
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
+import CampaignsHome from '../components/CampaignsHome';
 
 import { connect } from 'react-redux';
 
@@ -44,6 +45,12 @@ class Body extends Component {
               return <LogInForm logIn={this.logIn} {...routerProps} />
             }} />
             <Route path='/signup' render={(routerProps) => {
+              return <SignUpForm logIn={this.logIn} {...routerProps} />
+            }} />
+            <Route path='/campaigns' render={(routerProps) => {
+              return <CampaignsHome logIn={this.logIn} {...routerProps} />
+            }} />
+            <Route path='/characters' render={(routerProps) => {
               return <SignUpForm logIn={this.logIn} {...routerProps} />
             }} />
             <Redirect from='/' to='/home' />

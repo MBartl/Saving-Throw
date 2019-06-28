@@ -3,7 +3,7 @@ import loadingReducer from './loadingReducer';
 import userReducer from './userReducer';
 
 const rootReducer = () => combineReducers({
-  wait: loadingReducer,
+  loading: loadingReducer,
   user: userReducer
 });
 

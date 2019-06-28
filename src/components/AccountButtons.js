@@ -17,7 +17,7 @@ class AccountButtons extends Component {
           this.props.user.currentUser === null ?
             <Fragment>
               <Link to='/home'>
-                <button className='settingsBtn'>Home</button>
+                <button>Home</button>
               </Link>
               <Link to='/signup'>
                 <button className='actBtn'>Sign Up</button>
@@ -29,7 +29,7 @@ class AccountButtons extends Component {
           :
           <Fragment>
             <Link to='/home'>
-              <button className='settingsBtn'>Home</button>
+              <button>Home</button>
             </Link>
             <Link to='/home'>
               <button onClick={this.logOut}
@@ -37,7 +37,6 @@ class AccountButtons extends Component {
             </Link>
             <button className='actBtn'>Settings</button>
           </Fragment>
-        }
         }
       </Fragment>
     );
@@ -47,7 +46,7 @@ class AccountButtons extends Component {
 
 const mapStateToProps = state => {
   return {
-    loadState: state.wait,
+    loadState: state.loading,
     user: state.user
   }
 }
@@ -59,8 +58,3 @@ const mapDispatchToProps = dispatch => {
     }
   }
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AccountButtons);

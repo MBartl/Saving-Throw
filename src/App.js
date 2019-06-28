@@ -6,6 +6,8 @@ import Sidebar from './containers/Sidebar'
 import Spinner from './components/Spinner'
 import Body from './containers/Body'
 
+import { url } from './route'
+
 import { connect } from 'react-redux';
 
 class App extends Component {
@@ -15,9 +17,8 @@ class App extends Component {
     const token = localStorage.getItem('token')
 
     if (token !== null) {
-      fetch('http://localhost:3000/api/auto_login', {
+      fetch(url + 'auto_login', {
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': token
         }
       })
@@ -53,7 +54,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    loadState: state.wait
+    loadState: state.loading
   }
 }
 

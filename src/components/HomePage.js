@@ -6,7 +6,7 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div style={{backgroundColor: 'black'}}>
+      <div>
         {this.props.user.currentUser ?
 
           <h1>Welcome {this.props.user.currentUser.username}</h1> :
