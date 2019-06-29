@@ -6,7 +6,7 @@ class LogInForm extends Component {
     e.preventDefault()
     let username = e.target.username.value
     let password = e.target.password.value
-    let user = {username, password}
+    let user = {auth: {username, password}}
 
     this.props.logIn(user)
   }

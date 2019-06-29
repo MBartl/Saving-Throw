@@ -7,7 +7,7 @@ class SignUpForm extends Component {
     let username = e.target.username.value
     let password = e.target.password.value
     let confirmation = e.target.confirmation.value
-    let user = {username, password, confirmation}
+    let user = {user: {username, password, confirmation}}
 
     this.props.logIn(user)
   }

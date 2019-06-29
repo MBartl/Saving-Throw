@@ -6,7 +6,7 @@ export default function loadingReducer(
 ) {
   switch (action.type) {
     case 'LOADING':
-      return {...state, loading: !state.loading}
+      return {...state, loading: !state.loading};
     default:
       return state;
   }

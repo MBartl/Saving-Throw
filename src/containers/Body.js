@@ -12,7 +12,7 @@ class Body extends Component {
 
   logIn = (userInput) => {
     let path;
-    userInput.confirmation ?  path = 'users' : path = 'login';
+    userInput.user ? path = 'users' : path = 'login';
 
     fetch('http://localhost:3000/api/' + path, {
       method: 'POST',
@@ -25,7 +25,8 @@ class Body extends Component {
     .then(res => res.json())
     .then(response => {
       if (response.errors) {
-        alert(response.errors)
+        const errors = response.errors.split('<<|>>')
+        alert(errors)
       } else {
         localStorage.setItem("token", response.jwt)
         this.props.login(response.user)
