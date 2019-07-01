@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 
-import HomePage from '../components/HomePage';
+import HomePage from './HomePage';
+import CampaignsHome from './CampaignsHome';
+
+import Spinner from '../components/Spinner'
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
-import CampaignsHome from '../components/CampaignsHome';
+import NewCampaignForm from '../components/NewCampaignForm';
+
+import { url } from '../route'
 
 import { connect } from 'react-redux';
 
 class Body extends Component {
 
-  logIn = (userInput) => {
+  signIn = (userInput) => {
     let path;
     userInput.user ? path = 'users' : path = 'login';
 
-    fetch('http://localhost:3000/api/' + path, {
+    fetch(url + path, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,24 +43,32 @@ class Body extends Component {
   render() {
     return (
         <div id='body'>
-          <Switch>
-            <Route path='/home' render={(routerProps) => {
-              return <HomePage {...routerProps} />
-            }} />
-            <Route path='/login' render={(routerProps) => {
-              return <LogInForm logIn={this.logIn} {...routerProps} />
-            }} />
-            <Route path='/signup' render={(routerProps) => {
-              return <SignUpForm logIn={this.logIn} {...routerProps} />
-            }} />
-            <Route path='/campaigns' render={(routerProps) => {
-              return <CampaignsHome logIn={this.logIn} {...routerProps} />
-            }} />
-            <Route path='/characters' render={(routerProps) => {
-              return <SignUpForm logIn={this.logIn} {...routerProps} />
-            }} />
-            <Redirect from='/' to='/home' />
-          </Switch>
+          {
+            this.props.loadState ?
+              <Spinner />
+            :
+            <Switch>
+              <Route path='/home' render={(routerProps) => {
+                return <HomePage {...routerProps} />
+              }} />
+              <Route path='/login' render={(routerProps) => {
+                return <LogInForm signIn={this.signIn} {...routerProps} />
+              }} />
+              <Route path='/signup' render={(routerProps) => {
+                return <SignUpForm signIn={this.signIn} {...routerProps} />
+              }} />
+              <Route path='/campaigns' render={(routerProps) => {
+                return <CampaignsHome {...routerProps} />
+              }} />
+              <Route path='/new-campaign' render={(routerProps) => {
+                return <NewCampaignForm {...routerProps} />
+              }} />
+              <Route path='/characters' render={(routerProps) => {
+                return <SignUpForm {...routerProps} />
+              }} />
+              <Redirect from='/' to='/home' />
+            </Switch>
+          }
         </div>
       // }
     );
@@ -64,6 +77,7 @@ class Body extends Component {
 
 const mapStateToProps = state => {
   return {
+    loadState: state.load.loading,
     user: state.user
   }
 }

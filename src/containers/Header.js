@@ -6,15 +6,17 @@ import { connect } from 'react-redux';
 class Header extends Component {
 
   logOut = () => {
-    this.props.logOut(this.props.user)
-    localStorage.removeItem("token")
-  }
+    this.props.logOut(this.props.user);
+    this.props.resetCampaigns();
+    this.props.resetCharacters();
+    localStorage.removeItem("token");
+  };
 
   render() {
     return (
       <div id='header'>
         <h1>Saving Throw</h1>
-        { this.props.loadState.loading ? null :
+        {
           this.props.user.currentUser === null ?
             <Fragment>
               <Link to='/home'>
@@ -41,23 +43,28 @@ class Header extends Component {
         }
       </div>
     );
-  }
+  };
 
 }
 
 const mapStateToProps = state => {
   return {
-    loadState: state.loading,
     user: state.user
-  }
+  };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     logOut: (token) => {
       dispatch({type: 'LOG_OUT', payload: token})
+    },
+    resetCampaigns: () => {
+      dispatch({type: 'RESET_CAMPAIGNS'})
+    },
+    resetCharacters: () => {
+      dispatch({type: 'RESET_CHARACTERS'})
     }
-  }
+  };
 }
 
 export default connect(

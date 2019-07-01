@@ -13,7 +13,7 @@ class AccountButtons extends Component {
   render() {
     return (
       <Fragment>
-        { this.props.loadState.loading ? null :
+        { this.props.loadState ? null :
           this.props.user.currentUser === null ?
             <Fragment>
               <Link to='/home'>
@@ -46,7 +46,7 @@ class AccountButtons extends Component {
 
 const mapStateToProps = state => {
   return {
-    loadState: state.loading,
+    loadState: state.load.loading,
     user: state.user
   }
 }

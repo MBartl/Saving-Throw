@@ -16,12 +16,43 @@ h1 {
   padding-top: 0.5em;
 }
 
+#campaignBtn {
+  margin-left: 2em;
+  margin-top: 2em;
+  width: 8em;
+  font-size: 95%;
+}
+
+#campaignForm {
+  padding-top: 1em;
+  width: 50%;
+}
+
+#campaignDesc {
+  height: 14em;
+}
+
+#campaignSubmit {
+  margin: 0;
+  margin-top: 1em;
+}
+
+h2 {
+  margin-left: 6.5em;
+}
+
+ul, li {
+  margin-left: 4.5em;
+}
+
 form {
   margin-left: 10em;
   padding-top: 2em;
 }
 
 button {
+  background-color: black;
+  padding: 0.6579em 0.7895em;
   margin-right: 0.4em;
   margin-left: 0.4em;
   width: 7.4em;

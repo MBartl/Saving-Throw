@@ -9,22 +9,20 @@ class SignUpForm extends Component {
     let confirmation = e.target.confirmation.value
     let user = {user: {username, password, confirmation}}
 
-    this.props.logIn(user)
+    this.props.signIn(user)
   }
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <label value='username'>Username</label>
-          <input name='username' />
-          <label value='password'>Password</label>
-          <input name='password' type='password' />
-          <label value='confirmation'>Confirm Password</label>
-          <input name='confirmation' type='password' />
-          <button value='submit'>Submit</button>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <label value='username'>Username</label>
+        <input name='username' />
+        <label value='password'>Password</label>
+        <input name='password' type='password' />
+        <label value='confirmation'>Confirm Password</label>
+        <input name='confirmation' type='password' />
+        <button value='submit'>Submit</button>
+      </form>
     );
   }
 

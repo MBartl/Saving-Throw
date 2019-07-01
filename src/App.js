@@ -43,7 +43,7 @@ class App extends Component {
         <Header />
         <Sidebar />
         {
-          this.props.loadState.loading ?
+          this.props.loadState ?
             <Spinner /> :
             <Body />
         }
@@ -54,7 +54,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    loadState: state.loading
+    loadState: state.load.loading
   }
 }
 

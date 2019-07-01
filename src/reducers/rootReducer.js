@@ -5,10 +5,10 @@ import campaignReducer from './campaignReducer';
 import characterReducer from './characterReducer';
 
 const rootReducer = () => combineReducers({
-  loading: loadingReducer,
+  load: loadingReducer,
   user: userReducer,
-  campaigns: campaignReducer,
-  characters: characterReducer
+  campaign: campaignReducer,
+  character: characterReducer
 });
 
 export default rootReducer;
