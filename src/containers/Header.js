@@ -9,7 +9,7 @@ class Header extends Component {
     this.props.logOut(this.props.user);
     this.props.resetCampaigns();
     this.props.resetCharacters();
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
   };
 
   render() {

@@ -18,7 +18,7 @@ class LogInForm extends Component {
         <input name='username' />
         <label value='password'>Password</label>
         <input name='password' type='password' />
-        <button value='submit'>Submit</button>
+        <button value='submit' className='formBtn'>Submit</button>
       </form>
     );
   }

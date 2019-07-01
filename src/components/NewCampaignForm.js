@@ -46,9 +46,8 @@ class newCampaignForm extends Component {
         <form id='campaignForm' onSubmit={this.handleSubmit}>
           <label value='name'>Name</label>
           <input name='name' />
-          <label value='description' className='maxPlayers'>Max Players</label>
-          <input type='number' className='maxPlayers' name='max_players'
-          min='1' max='50' />
+          <label value='description'>Max Players</label>
+          <input type='number' name='max_players' min='1' max='50' />
           <label value='description'>Description</label>
           <textarea name='description' id='campaignDesc' />
           <button value='submit' id='campaignSubmit'>Submit</button>

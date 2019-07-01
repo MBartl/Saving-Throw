@@ -1,14 +1,14 @@
 export default function userReducer(
   state = {
-    currentCharacters: []
+    characters: []
   },
   action
 ) {
   switch (action.type) {
     case 'SET_CHARACTERS':
-      return {...state, currentCharacters: action.payload};
+      return {...state, characters: action.payload};
     case 'RESET_CHARACTERS':
-      return {...state, currentCharacters: []}
+      return {...state, characters: []}
 
     default:
       return state;

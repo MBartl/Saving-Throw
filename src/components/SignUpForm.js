@@ -21,7 +21,7 @@ class SignUpForm extends Component {
         <input name='password' type='password' />
         <label value='confirmation'>Confirm Password</label>
         <input name='confirmation' type='password' />
-        <button value='submit'>Submit</button>
+        <button value='submit' className='formBtn'>Submit</button>
       </form>
     );
   }

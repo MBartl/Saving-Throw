@@ -3,11 +3,14 @@ import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 
 import HomePage from './HomePage';
 import CampaignsHome from './CampaignsHome';
+import CharactersHome from './CharactersHome'
 
 import Spinner from '../components/Spinner'
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
+
 import NewCampaignForm from '../components/NewCampaignForm';
+import NewCharacterForm from '../components/NewCharacterForm';
 
 import { url } from '../route'
 
@@ -64,7 +67,10 @@ class Body extends Component {
                 return <NewCampaignForm {...routerProps} />
               }} />
               <Route path='/characters' render={(routerProps) => {
-                return <SignUpForm {...routerProps} />
+                return <CharactersHome {...routerProps} />
+              }} />
+              <Route path='/new-characters' render={(routerProps) => {
+                return <NewCharacterForm {...routerProps} />
               }} />
               <Redirect from='/' to='/home' />
             </Switch>

@@ -1,7 +1,8 @@
 export default function loadingReducer(
   state = {
     loading: true,
-    campaignLoading: false
+    campaignLoading: false,
+    characterLoading: false
   },
   action
 ) {
@@ -10,6 +11,8 @@ export default function loadingReducer(
       return {...state, loading: !state.loading};
     case 'CAMPAIGN_LOADING':
       return {...state, campaignLoading: !state.campaignLoading};
+    case 'CHARACTER_LOADING':
+      return {...state, characterLoading: !state.characterLoading};
     default:
       return state;
   }
