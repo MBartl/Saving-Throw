@@ -90,6 +90,16 @@ input.level {
   height: 0px;
 }
 
+.charHeader.as {
+  font-size: 105%;
+  margin: 0px;
+}
+
+.charHeader.as.bns {
+  font-size: 90%;
+  margin-left: 10em;
+}
+
 .charDiv, .charInput {
   display: inline!important;
   padding-right: 0.4em;
@@ -135,7 +145,7 @@ input.level {
 }
 
 #sidebar {
-  height: 100%;
+  height: -webkit-fill-available;
   min-height: 40em;
   width: 8em;
   float: left;
@@ -206,11 +216,20 @@ input.level {
   margin-left: 5.6em;
 }
 
+#ptsRemain {
+  margin-left: 11.6em;
+}
+
 #classDisplay {
-  display: inline;
-  position: relative;
-  left: 4em;
-  top: 0.7em;
+  position: absolute;
+  top: 24.46em;
+  left: 13.8em;
+}
+
+#subclassDisplay {
+  position: absolute;
+  top: 28.46em;
+  left: 13.8em;
 }
 
 #raceDisplay {
@@ -219,13 +238,14 @@ input.level {
   left: 27em;
 }
 
-#characterDesc {
-  width: 82%;
+#subraceDisplay {
+  position: absolute;
+  top: 28.86em;
+  left: 25.9em;
 }
 
-#asHeader {
-  font-size: 105%;
-  margin: 0px;
+#characterDesc {
+  width: 82%;
 }
 
 #bioHeader {
