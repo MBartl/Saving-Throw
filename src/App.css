@@ -1,10 +1,11 @@
 html, #root, .App {
+  max-height:  -webkit-fill-available;
   width: 100%;
   max-width: none;
 }
 
 body {
-  height: 91%;
+  height: 80%;
   max-width: none;
   padding: 0;
 }
@@ -97,7 +98,12 @@ input.level {
 
 .charHeader.as.bns {
   font-size: 90%;
-  margin-left: 10em;
+  margin-left: 4em;
+}
+
+.ea.bns {
+  margin-left: 0.5em;
+  font-size: 85%;
 }
 
 .charDiv, .charInput {
@@ -146,10 +152,10 @@ input.level {
 
 #sidebar {
   height: -webkit-fill-available;
-  min-height: 40em;
+  max-height: 100%;
   width: 8em;
   float: left;
-  background-color: lightgrey;
+  background-color: darkgrey;
 }
 
 #spinner {
@@ -217,7 +223,8 @@ input.level {
 }
 
 #ptsRemain {
-  margin-left: 11.6em;
+  float: right;
+  margin-right: 10em;
 }
 
 #classDisplay {
@@ -228,8 +235,9 @@ input.level {
 
 #subclassDisplay {
   position: absolute;
-  top: 28.46em;
-  left: 13.8em;
+  font-size: 90%;
+  top: 32.2em;
+  left: 15.2em;
 }
 
 #raceDisplay {
@@ -240,8 +248,9 @@ input.level {
 
 #subraceDisplay {
   position: absolute;
-  top: 28.86em;
-  left: 25.9em;
+  font-size: 90%;
+  top: 32.2em;
+  left: 29.5em;
 }
 
 #characterDesc {

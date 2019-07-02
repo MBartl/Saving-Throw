@@ -19,20 +19,25 @@ class NewCharacterForm extends Component {
     abilityScores: [{key: 'Strength', value: 8}, {key: 'Dexterity', value: 8},
     {key: 'Constitution', value: 8}, {}, {key: 'Intelligence', value: 8},
     {key: 'Wisdom', value: 8}, {key: 'Charisma', value: 8}],
-    bonus: [],
+    bonus: [0, 0, 2, 0, 1, 0],
     points: 27
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    debugger
 
     const token = localStorage.getItem('token')
 
-    let name = e.target.name.value
-    let biography = e.target.biography.value
-    let level = e.target.level.value
-    let character = {character: {name, biography, level}}
+    const name = e.target.parentElement.name.value
+    const biography = e.target.parentElement.biography.value
+    const level = this.state.lvl
+    const player_class = this.state.class
+    const race = this.state.race
+    const subclass = this.state.subclass
+    const subrace = this.state.subraces[this.state.subraceIndex]
+    const ability_score = this.state.abilityScores.filter(score => score.value).map((score, index) => score.value + this.state.bonus[index]).join(', ')
+
+    const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}}
 
     fetch(url + 'characters', {
       method: 'POST',
@@ -44,12 +49,12 @@ class NewCharacterForm extends Component {
       body: JSON.stringify(character)
     })
     .then(res => res.json())
-    .then(character => {
-      if (character.errors) {
-        alert(character.errors)
+    .then(doc => {
+      if (doc.errors) {
+        alert(doc.errors)
       } else {
-      this.props.addCampaign(character)
-      this.props.history.push('/characters')
+        this.props.addCharacter(doc.character)
+        this.props.history.push(`/characters`)
       }
     })
   }
@@ -92,7 +97,6 @@ class NewCharacterForm extends Component {
   }
 
   setRace = () => {
-    console.log(this.state.race)
     this.setState({
       race: this.displayRace()
     }, () => this.setSubrace())
@@ -124,26 +128,25 @@ class NewCharacterForm extends Component {
   }
 
   setSubrace = () => {
-    console.log(this.state.subraces, this.state.subraceIndex)
     if (this.state.race === 'Dwarf') {
       this.setState({
         subraces: ['Hill Dwarf', 'Mountain Dwarf']
-      })
+      }, () => this.getBonuses())
     }
     else if (this.state.race === 'Halfling') {
       this.setState({
-        subraces: ['Lightfoot Halfling']
-      })
+        subraces: ['Lightfoot']
+      }, () => this.getBonuses())
     }
     else if (this.state.race ===  'Elf') {
       this.setState({
-        subraces: ['High Elf', 'Wood Elf', 'Dark Elf (Drow)']
-      })
+        subraces: ['High Elf', 'Wood Elf', 'Dark Elf']
+      }, () => this.getBonuses())
     }
     else {
       this.setState({
         subraces: []
-      })
+      }, () => this.getBonuses())
     }
   }
 
@@ -168,22 +171,105 @@ class NewCharacterForm extends Component {
     }
   }
 
-  handleChange = (e, ability) => {
-    let index = this.state.abilityScores.findIndex((s) => s.key === ability.key);
+  getBonuses = () => {
+    const raceBonuses = [
+      {'Dwarf': [0, 0, 2, 0, 0, 0]},
+      {'Elf': [0, 2, 0, 0, 0, 0]},
+      {'Halfling': [0, 2, 0, 0, 0, 0]},
+      {'Human': [1, 1, 1, 1, 1, 1]},
+      {'Dragonborn': [2, 0, 0, 0, 0, 1]},
+      {'Gnome': [0, 0, 0, 2, 0, 0]},
+      {'Half-Elf': [0, 0, 0, 0, 0, 2]},
+      {'Half-Orc': [2, 0, 1, 0, 0, 0]},
+      {'Tiefling': [0, 0, 0, 1, 0, 2]}
+    ]
 
-    let pointChange;
-    if (parseInt(e.target.value) > this.state.abilityScores[index].value)
-      {e.target.value > 13 ? pointChange = -2 : pointChange = -1}
-    else
-      {e.target.value > 12 ? pointChange = 2 : pointChange = 1}
+    const subBonuses = [
+      {'Hill Dwarf': [0, 0, 0, 0, 1, 0]},
+      {'High Elf': [0, 0, 0, 1, 0, 0]},
+      {'Lightfoot': [0, 0, 0, 0, 0, 1]},
+      {'Mountain Dwarf': [2, 0, 0, 0, 0, 0]},
+      {'Wood Elf': [0, 0, 0, 0, 1, 0]},
+      {'Dark Elf': [0, 0, 0, 0, 0, 1]}
+    ]
 
-    let scores = this.state.abilityScores;
-    scores.splice(index, 1, {key: ability.key, value: parseInt(e.target.value)})
+    const race = this.state.race
+    const subrace = this.state.subraces[this.state.subraceIndex]
+
+    let total
+    const bonus = raceBonuses[raceBonuses.findIndex(r => Object.keys(r)[0] === race)]
+    if (this.state.subraces.length > 0) {
+      const sub = subBonuses[subBonuses.findIndex(s => Object.keys(s)[0] === subrace)]
+      total = bonus[race].map((stat, index) => sub[subrace][index] > stat ? sub[subrace][index] : stat)
+    } else {
+      total = bonus[race]
+    }
 
     this.setState({
-      abilityScores: [...scores],
-      points: this.state.points+pointChange
+      bonus: total
     })
+  }
+
+  handleChange = (e, ability) => {
+    e.preventDefault()
+
+    let index = this.state.abilityScores.findIndex(s => s.key === ability.key);
+    let newValue = parseInt(e.target.value)
+    let oldValue = this.state.abilityScores[index].value
+    let singlePointChange;
+
+    if (newValue > 999) {
+      alert("Stop messing with my form please\nYou're going to break the 'points remaining' counter ¯\\_(ツ)_/¯")
+    }
+
+    if (isNaN(newValue)) {
+      let scores = this.state.abilityScores;
+      scores.splice(index, 1, {key: ability.key, value: ''})
+
+      let multiPointChange = oldValue
+
+      if (oldValue-13 > 0)
+        {multiPointChange = multiPointChange+newValue-13}
+
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+multiPointChange
+      })
+    } else {
+
+    if (newValue+1 === oldValue ||
+      newValue-1 === oldValue) {
+        if (newValue > oldValue)
+          {newValue > 13 ? singlePointChange = -2 : singlePointChange = -1}
+        else
+          {newValue > 12 ? singlePointChange = 2 : singlePointChange = 1}
+
+        let scores = this.state.abilityScores;
+        scores.splice(index, 1, {key: ability.key, value: newValue})
+
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+singlePointChange
+      })
+    }
+
+    else {
+      let multiPointChange = oldValue - newValue
+
+      if (newValue > oldValue && newValue-13 > 0)
+        {multiPointChange = multiPointChange-(newValue-13)}
+
+      else if (newValue < oldValue && oldValue-13 > 0)
+        {multiPointChange = multiPointChange+oldValue-13}
+
+      let scores = this.state.abilityScores;
+      scores.splice(index, 1, {key: ability.key, value: newValue});
+
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+multiPointChange
+      })
+    }}
   }
 
   handleLevel = (e) => {
@@ -193,16 +279,17 @@ class NewCharacterForm extends Component {
   }
 
   render() {
+    const stats = ['STR+', 'DEX+', 'CON+', 'INT+', 'WIS+', 'CHA+']
     return (
       <Fragment>
         <Link to='characters'>
           <button id='characterBtn'>Back</button>
         </Link>
-        <form id='characterForm' onSubmit={this.handleSubmit}>
+        <form id='characterForm'>
           <div id='charNameInput'>
             <img id='nameImg' src='charactersheet.png'
             alt='D&D character form name background' />
-            <input id='charNameField' placeholder='Character Name' />
+            <input name='name' id='charNameField' placeholder='Character Name' />
           </div>
 
           <div id='level' className='level'>
@@ -255,13 +342,15 @@ class NewCharacterForm extends Component {
               {
                 this.state.subraces.length !== 0 ?
                   <Fragment>
-                    <button className='charToggle' type='button' style={{left: '23.2em'}}
+                    <button className='charToggle' type='button'
+                      style={{left: '24em'}}
                       onClick={() => this.toggleSubrace(-1)}>
                       <span>◀ </span>
                     </button>
                     <div id='subraceDisplay' value='playerRace'>
                       {this.displaySubrace()}</div>
-                    <button className='charToggle' type='button' style={{left: '33.6em'}}
+                    <button className='charToggle' type='button'
+                      style={{left: '33em'}}
                       onClick={() => this.toggleSubrace(1)}>
                       <span> ▶</span>
                     </button>
@@ -272,15 +361,26 @@ class NewCharacterForm extends Component {
           </div>
           <br /><br />
 
-          <label value='bio'>
+          <label value='biography'>
             <h3 className='charHeader' id='bioHeader'>Biography</h3>
           </label><br />
-          <textarea name='bio' id='characterDesc' />
-          <br />
+          <textarea name='biography' id='characterDesc' />
+          <br /><br />
 
           <label value='playerClass'>
             <h3 className='charHeader as'>Ability Scores:</h3>
-            <h5 className='charHeader as bns'>Bonuses:</h5><br />
+            <h5 className='charHeader as bns'>Bonuses:
+              {
+                this.state.bonus.map((stat, index) => {
+                  return (
+                    stat > 0 ? <span key={index} className='ea bns'>
+                      {stats[index] + stat}</span>
+                    :
+                    null
+                  )
+                })
+              }
+            </h5><br />
           </label><br />
           {
             this.state.abilityScores.map((ability, index) => {
@@ -294,11 +394,10 @@ class NewCharacterForm extends Component {
               )
             })
           }
-          <br />
+          <br /><br />
           <h5 className='charHeader' id='ptsRemain'>
             Points Remaining: {this.state.points}</h5>
-          <br /><br />
-          <button value='submit' id='characterSubmit'>Create</button>
+          <button value='submit' id='characterSubmit' onClick={this.handleSubmit}>Next</button>
         </form>
       </Fragment>
     );
