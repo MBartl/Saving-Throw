@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 
-import Spinner from '../components/Spinner'
+import Loader from '../components/Loader'
 
 class CampaignsHome extends Component {
 
@@ -50,7 +50,7 @@ class CampaignsHome extends Component {
         </Link>
         {
           this.props.loadState ?
-            <Spinner />
+            <Loader />
           :
           this.props.campaigns.length !== 0 ?
             <Fragment>

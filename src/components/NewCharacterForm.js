@@ -280,6 +280,7 @@ class NewCharacterForm extends Component {
 
   render() {
     const stats = ['STR+', 'DEX+', 'CON+', 'INT+', 'WIS+', 'CHA+']
+    const statsToFull = [{'STR+': 'Strength'}, {'DEX+': 'Dexterity'}, {'CON+': 'Constitution'}, {'INT+': 'Intelligence'}, {'WIS+': 'Wisdom'}, {'CHA+': 'Charisma'}]
     return (
       <Fragment>
         <Link to='characters'>
@@ -298,102 +299,111 @@ class NewCharacterForm extends Component {
             <label className='level' value='playerClass'>Level: </label>
           </div>
 
-          <br /><br />
-          <label value='playerClass'>
-            <h3 className='charHeader'>Class</h3>
-          </label>
-          <label value='playerRace' id='raceHeader'>
-            <h3 className='charHeader' style={{marginLeft: '4.35em'}}>Race</h3>
-          </label><br />
-
-          <div>
-            <button className='charToggle' type='button' style={{left: '10.6em'}}
-              onClick={() => this.toggleClass(-1)}>
-              <span>◀ </span>
-            </button>
-            <div id='classDisplay' value='playerClass'>{this.displayClass()}</div>
-            <button className='charToggle' type='button' style={{left: '18.5em'}}
-              onClick={() => this.toggleClass(1)}>
-              <span> ▶</span>
-            </button>
-
-            <button className='charToggle' type='button' style={{left: '24em'}}
-              onClick={() => this.toggleRace(-1)}>
-              <span>◀ </span>
-            </button>
-            <div id='raceDisplay' value='playerRace'>{this.displayRace()}</div>
-            <button className='charToggle' type='button' style={{left: '32.5em'}} onClick={() => this.toggleRace(1)}>
-              <span> ▶</span>
-            </button>
-          </div>
-          <br /><br />
-
-          <label value='playerClass'>
-            <h3 className='charHeader' style={{marginLeft: '3em'}}>Subclass</h3>
-          </label>
-          <label value='playerRace' id='raceHeader'>
-            <h3 className='charHeader' style={{marginLeft: '2.3em'}}>Subrace</h3>
-          </label><br />
-
-          <div>
-            <div id='subclassDisplay' value='playerClass'>
-              {this.displaySubclass()}</div>
-            <div>
-              {
-                this.state.subraces.length !== 0 ?
-                  <Fragment>
-                    <button className='charToggle' type='button'
-                      style={{left: '24em'}}
-                      onClick={() => this.toggleSubrace(-1)}>
-                      <span>◀ </span>
-                    </button>
-                    <div id='subraceDisplay' value='playerRace'>
-                      {this.displaySubrace()}</div>
-                    <button className='charToggle' type='button'
-                      style={{left: '33em'}}
-                      onClick={() => this.toggleSubrace(1)}>
-                      <span> ▶</span>
-                    </button>
-                  </Fragment>
-                : null
-              }
-            </div>
-          </div>
-          <br /><br />
-
           <label value='biography'>
             <h3 className='charHeader' id='bioHeader'>Biography</h3>
           </label><br />
           <textarea name='biography' id='characterDesc' />
-          <br /><br />
+          <br />
 
+          <div id='toggleContainer'>
+            <label value='playerClass'>
+              <h3 className='charHeader'>Class</h3>
+            </label>
+            <label value='playerRace' id='raceHeader'>
+              <h3 className='charHeader' style={{marginLeft: '4.6em'}}>Race</h3>
+            </label><br />
+
+            <div>
+              <button className='charToggle' type='button' style={{left: '10.6em'}}
+                onClick={() => this.toggleClass(-1)}>
+                <span>◀ </span>
+              </button>
+              <div id='classDisplay' value='playerClass'>{this.displayClass()}</div>
+              <button className='charToggle' type='button' style={{left: '18.5em'}}
+                onClick={() => this.toggleClass(1)}>
+                <span> ▶</span>
+              </button>
+
+              <button className='charToggle' type='button' style={{left: '24em'}}
+                onClick={() => this.toggleRace(-1)}>
+                <span>◀ </span>
+              </button>
+              <div id='raceDisplay' value='playerRace'>{this.displayRace()}</div>
+              <button className='charToggle' type='button' style={{left: '32.5em'}} onClick={() => this.toggleRace(1)}>
+                <span> ▶</span>
+              </button>
+            </div>
+            <br /><br />
+
+            <label value='playerClass'>
+              <h3 className='charHeader' style={{marginLeft: '3em'}}>Subclass</h3>
+            </label>
+            {
+              this.state.subraces.length > 0 ?
+                <label value='playerRace' id='raceHeader'>
+                  <h3 className='charHeader' style={{marginLeft: '2.9em'}}>Subrace</h3>
+                  <br />
+                </label>
+              :
+              null
+            }
+
+            <div>
+              <div id='subclassDisplay' value='playerClass'>
+                {this.displaySubclass()}</div>
+              <div>
+                {
+                  this.state.subraces.length !== 0 ?
+                    <Fragment>
+                      <button className='charToggle sub' type='button'
+                        style={{left: '24em'}}
+                        onClick={() => this.toggleSubrace(-1)}>
+                        <span>◀ </span>
+                      </button>
+                      <div id='subraceDisplay' value='playerRace'>
+                        {this.displaySubrace()}</div>
+                      <button className='charToggle sub' type='button'
+                        style={{left: '32.5em'}}
+                        onClick={() => this.toggleSubrace(1)}>
+                        <span> ▶</span>
+                      </button>
+                    </Fragment>
+                  : null
+                }
+              </div>
+            </div>
+          </div>
+          <br /><br />
           <label value='playerClass'>
             <h3 className='charHeader as'>Ability Scores:</h3>
             <h5 className='charHeader as bns'>Bonuses:
               {
-                this.state.bonus.map((stat, index) => {
-                  return (
-                    stat > 0 ? <span key={index} className='ea bns'>
-                      {stats[index] + stat}</span>
-                    :
-                    null
-                  )
-                })
+                this.state.race === 'Human' ?
+                  <span className='ea bns'>ALL+1</span> :
+                  this.state.bonus.map((stat, index) => {
+                    return (
+                      stat > 0 ? <span key={index} className='ea bns'>
+                        {stats[index] + stat}</span>
+                      :
+                    null)
+                  })
               }
-            </h5><br />
+            </h5>
           </label><br />
-          {
-            this.state.abilityScores.map((ability, index) => {
-              return (
-                index === 3 ? <br key={index}/> :
-                <div className='charDiv' id={ability.key} key={index}>{ability.key}:
-                  <input className='charInput' id={ability.key} type='number'
-                    name={ability.key} min='8' max='15' value={ability.value}
-                    onChange={(e) => this.handleChange(e, ability)} />
-                </div>
-              )
-            })
-          }
+          <div id='asContainer'>
+            {
+              this.state.abilityScores.map((ability, index) => {
+                return (
+                  index === 3 ? <br key={index}/> :
+                  <div className='charDiv' id={ability.key} key={index}>{ability.key}:
+                    <input className='charInput' id={ability.key} type='number'
+                      name={ability.key} min='8' max='15' value={ability.value}
+                      onChange={(e) => this.handleChange(e, ability)} />
+                  </div>
+                )
+              })
+            }
+          </div>
           <br /><br />
           <h5 className='charHeader' id='ptsRemain'>
             Points Remaining: {this.state.points}</h5>

@@ -43,6 +43,10 @@ button {
 }
 
 .actBtn {
+  margin-top: 3em;
+}
+
+.actBtn.R {
   float: right;
 }
 
@@ -59,25 +63,33 @@ button {
   border-radius: 0.75em;
   display: inline;
   position: absolute;
+  top: 28.6em;
+  background: darkgrey;
+}
+
+.charToggle.sub {
+  top: 32.5em;
 }
 
 .level {
   display: inline;
-  float: right;
-  margin-top: 1.56em;
-  margin-right: 3.5em;
   padding: 0.4em;
 }
 
 label.level {
-  margin: 1.1em 0;
+  position: absolute;
   font-size: large;
+  margin-top: 3.75em;
+  margin-left: 17.6em;
 }
 
 input.level {
   text-align: center;
   padding: 0.4em 0;
   padding-left: 0.5em;
+  margin-left: 24em;
+  margin-top: 3.13em;
+  position: absolute;
 }
 
 .charScroll {
@@ -87,18 +99,23 @@ input.level {
 
 .charHeader {
   display: inline;
-  margin: 0px 0px 0px 4em;
+  margin: 0px 0px 0px 3.8em;
   height: 0px;
+  position: relative;
+  top: 11em;
 }
 
 .charHeader.as {
   font-size: 105%;
   margin: 0px;
+  position: absolute;
+  top: 34.5em;
 }
 
 .charHeader.as.bns {
-  font-size: 90%;
-  margin-left: 4em;
+  font-size: 93%;
+  margin-left: 16.8em;
+  top: 39.1em;
 }
 
 .ea.bns {
@@ -140,14 +157,26 @@ input.level {
   margin-left: 1.73em;
 }
 
+#home {
+  float: left;
+}
+
+#title {
+  display: table-cell;
+  vertical-align: -webkit-baseline-middle;
+}
+
 #topSideBtn {
-  margin-top: 2.4em;
+  margin-top: 2em;
 }
 
 #header {
-  height: 7em;
+  height: 6em;
   min-width: 42em;
   background-color: darkgrey;
+  text-align: center;
+  display: table;
+  width: 100%;
 }
 
 #sidebar {
@@ -158,7 +187,7 @@ input.level {
   background-color: darkgrey;
 }
 
-#spinner {
+#Loader {
   text-align: center;
   padding-top: 2em;
 }
@@ -166,6 +195,14 @@ input.level {
 #body {
   margin-left: 8em;
   height: 92%;
+}
+
+#signup {
+  margin-top: 0;
+}
+
+#homepage {
+  margin-right: 16em;
 }
 
 #campaignDesc {
@@ -195,6 +232,13 @@ input.level {
   min-width: 33em;
 }
 
+#nameImg {
+  height: 7.8em;
+  border-radius: 2.5em;
+  position: absolute;
+  top: 12.6em;
+}
+
 #charNameInput {
   display: inline;
   width: 18em;
@@ -213,50 +257,61 @@ input.level {
   border-width: thin;
 }
 
-#nameImg {
-  height: 7.8em;
-  border-radius: 2.5em;
+#bioHeader {
+  margin: 0;
+  position: absolute;
+  top: 18em;
 }
 
 #raceHeader {
   margin-left: 5.6em;
 }
 
-#ptsRemain {
-  float: right;
-  margin-right: 10em;
-}
-
 #classDisplay {
   position: absolute;
-  top: 24.46em;
+  top: 29.3em;
   left: 13.8em;
+}
+
+#raceDisplay {
+  position: absolute;
+  top: 29.3em;
+  left: 27em;
 }
 
 #subclassDisplay {
   position: absolute;
   font-size: 90%;
-  top: 32.2em;
+  top: 37em;
   left: 15.2em;
-}
-
-#raceDisplay {
-  position: absolute;
-  top: 24.46em;
-  left: 27em;
 }
 
 #subraceDisplay {
   position: absolute;
-  font-size: 90%;
-  top: 32.2em;
-  left: 29.5em;
+  font-size: 86%;
+  top: 38.78em;
+  left: 30.78em;
 }
 
 #characterDesc {
-  width: 82%;
+  position: absolute;
+  width: 28em;
+  top: 23em;
+  resize: none;
 }
 
-#bioHeader {
-  margin: 0;
+#asContainer {
+  position: absolute;
+  top: 38.5em;
+}
+
+#ptsRemain {
+  position: absolute;
+  margin-top: 42.6em;
+  margin-left: 20em;
+}
+
+#characterSubmit {
+  position: absolute;
+  top: 44.5em;
 }

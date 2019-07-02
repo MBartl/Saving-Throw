@@ -15,30 +15,31 @@ class Header extends Component {
   render() {
     return (
       <div id='header'>
-        <h1>Saving Throw</h1>
         {
           this.props.user.currentUser === null ?
             <Fragment>
               <Link to='/home'>
-                <button>Home</button>
+                <button id='home' className='actBtn'>Home</button>
               </Link>
-              <Link to='/signup'>
-                <button className='actBtn'>Sign Up</button>
+              <h1 id='title'>Saving Throw</h1>
+              <Link className='actBtn R' to='/signup'>
+                <button className='actBtn R' id='signup'>Sign Up</button>
               </Link>
               <Link to='/login'>
-                <button className='actBtn'>Log In</button>
+                <button className='actBtn R'>Log In</button>
               </Link>
             </Fragment>
           :
           <Fragment>
             <Link to='/home'>
-              <button>Home</button>
+              <button id='home' className='actBtn'>Home</button>
             </Link>
+            <h1 id='title'>Saving Throw</h1>
             <Link to='/home'>
               <button onClick={this.logOut}
-              className='actBtn'>Log Out</button>
+              className='actBtn R'>Log Out</button>
             </Link>
-            <button className='actBtn'>Settings</button>
+            <button className='actBtn R'>Settings</button>
           </Fragment>
         }
       </div>

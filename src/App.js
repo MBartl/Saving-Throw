@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+import './Loader.css'
 
 import Header from './containers/Header'
 import Sidebar from './containers/Sidebar'
-import Spinner from './components/Spinner'
+import Loader from './components/Loader'
 import Body from './containers/Body'
 
 import { url } from './route'
@@ -44,7 +45,7 @@ class App extends Component {
         <Sidebar />
         {
           this.props.loadState ?
-            <Spinner /> :
+            <Loader /> :
             <Body />
         }
       </div>

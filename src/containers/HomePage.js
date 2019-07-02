@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import Spinner from '../components/Spinner'
+import Loader from '../components/Loader'
 
 class HomePage extends Component {
 
   render() {
     return (
-      <div>
+      <div id='homepage'>
         {
           this.props.loadState ?
-            <Spinner />
+            <Loader />
           :
           this.props.user.currentUser ?
 

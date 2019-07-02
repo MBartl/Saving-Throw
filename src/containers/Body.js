@@ -5,7 +5,7 @@ import HomePage from './HomePage';
 import CampaignsHome from './CampaignsHome';
 import CharactersHome from './CharactersHome'
 
-import Spinner from '../components/Spinner'
+import Loader from '../components/Loader'
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
 
@@ -48,7 +48,7 @@ class Body extends Component {
         <div id='body'>
           {
             this.props.loadState ?
-              <Spinner />
+              <Loader />
             :
             <Switch>
               <Route path='/home' render={(routerProps) => {
