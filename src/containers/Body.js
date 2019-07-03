@@ -59,12 +59,11 @@ class Body extends Component {
               <Route path='/signup' render={(routerProps) => {
                 return <SignUpForm signIn={this.signIn} {...routerProps} />
               }} />
-              <Route path='/campaigns' render={(routerProps) => {
-                return <CampaignsHome {...routerProps} />
-              }} />
-              <Route path='/new-campaign' render={(routerProps) => {
-                return <CampaignsHome {...routerProps} />
-              }} />
+
+              <Route path='/(campaigns|more-campaigns|new-campaign)/'
+                render={(routerProps) => {
+                  return <CampaignsHome {...routerProps} />
+                }} />
               <Route path='/characters' render={(routerProps) => {
                 return <CharactersHome {...routerProps} />
               }} />

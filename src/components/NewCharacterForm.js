@@ -16,7 +16,7 @@ class NewCharacterForm extends Component {
     class: 'Barbarian',
     subclass: 'Berserker',
     race: 'Dwarf',
-    subraces: ['Hill Dwarf', 'Mountain Dwarf'],
+    subraces: ['Hill Dwarf', 'Mountain'],
     abilityScores: [{key: 'Strength', value: 8}, {key: 'Dexterity', value: 8},
     {key: 'Constitution', value: 8}, {}, {key: 'Intelligence', value: 8},
     {key: 'Wisdom', value: 8}, {key: 'Charisma', value: 8}],
@@ -43,7 +43,6 @@ class NewCharacterForm extends Component {
 
     const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}}
 
-    debugger
     fetch(url + 'characters', {
       method: 'POST',
       headers: {
@@ -55,8 +54,7 @@ class NewCharacterForm extends Component {
     })
     .then(res => res.json())
     .then(doc => {
-      debugger
-      if (doc.errors) {
+        if (doc.errors) {
         alert(doc.errors)
       } else {
         this.props.addCharacter(doc.character)
@@ -140,7 +138,7 @@ class NewCharacterForm extends Component {
   setSubrace = () => {
     if (this.state.race === 'Dwarf') {
       this.setState({
-        subraces: ['Hill Dwarf', 'Mountain Dwarf']
+        subraces: ['Hill Dwarf', 'Mountain']
       }, () => this.getBonuses())
     }
     else if (this.state.race === 'Halfling') {
@@ -199,7 +197,7 @@ class NewCharacterForm extends Component {
       {'Hill Dwarf': [0, 0, 0, null, 0, 1, 0]},
       {'High Elf': [0, 0, 0, null, 1, 0, 0]},
       {'Lightfoot': [0, 0, 0, null, 0, 0, 1]},
-      {'Mountain Dwarf': [2, 0, 0, null, 0, 0, 0]},
+      {'Mountain': [2, 0, 0, null, 0, 0, 0]},
       {'Wood Elf': [0, 0, 0, null, 0, 1, 0]},
       {'Dark Elf': [0, 0, 0, null, 0, 0, 1]}
     ]

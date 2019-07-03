@@ -9,23 +9,22 @@ class Sidebar extends Component {
     return (
       <div id='sidebar'>
         {
-          this.props.user.currentUser ?
+          this.props.user ?
             <Fragment>
-              <Link to='/campaigns'>
-                <button id='topSideBtn'
-                className='sideBtn'>Campaigns</button>
-              </Link>
               <Link to='/characters'>
                 <button className='sideBtn'>Characters</button>
               </Link>
+              <Link to='/campaigns'>
+                <button className='addSideBtn'>Campaigns</button>
+              </Link>
             </Fragment> :
-            <Fragment>
-              <br />
-            </Fragment>
+            null
         }
         { this.props.loadState ? null :
         <Link to='/'>
-          <button className='sideBtn'>Compendium</button>
+          <button className={this.props.user ? 'addSideBtn' : 'sideBtn'}>
+            Compendium
+          </button>
         </Link>
         }
       </div>
@@ -37,7 +36,7 @@ class Sidebar extends Component {
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
-    user: state.user
+    user: state.user.currentUser
   }
 }
 

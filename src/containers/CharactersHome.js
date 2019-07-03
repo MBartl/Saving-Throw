@@ -17,9 +17,7 @@ class CharactersHome extends Component {
       this.props.characterLoad()
 
       fetch(url + 'characters', {
-        headers: {
-          'Authorization': token
-        }
+        headers: {'Authorization': token}
       })
       .then(res => res.json())
       .then(doc => {

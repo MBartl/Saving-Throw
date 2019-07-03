@@ -19,9 +19,7 @@ class App extends Component {
 
     if (token !== null) {
       fetch(url + 'auto_login', {
-        headers: {
-          'Authorization': token
-        }
+        headers: {'Authorization': token}
       })
       .then(res => res.json())
       .then(response => {

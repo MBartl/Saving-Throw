@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 
-import MainCampaign from '../components/MainCampaign'
+import MoreCampaigns from './MoreCampaigns';
+import MainCampaign from '../components/MainCampaign';
 import NewCampaignForm from '../components/NewCampaignForm';
 import Loader from '../components/Loader'
 
@@ -14,9 +15,10 @@ class CampaignsHome extends Component {
 
   state = {
     nav: 'Home'
-  }
+  };
 
   componentDidMount(){
+    if (this.state.nav === 'More' || this.state.nav === 'New') {return}
     const token = localStorage.getItem('token')
 
     if (this.props.campaigns.length === 0 &&
@@ -25,9 +27,7 @@ class CampaignsHome extends Component {
       this.props.campaignLoad()
 
       fetch(url + 'campaigns', {
-        headers: {
-          'Authorization': token
-        }
+        headers: {'Authorization': token}
       })
       .then(res => res.json())
       .then(doc => {
@@ -75,8 +75,10 @@ class CampaignsHome extends Component {
             className={this.state.nav === 'Home' ? 'bodyBtn selected' :
             'bodyBtn'}>Home</button>
         </Link>
-        <Link to='/all-campaigns'>
-          <button className='bodyBtn'>All</button>
+        <Link to='/more-campaigns'>
+          <button onClick={event => this.getState(event)}
+            className={this.state.nav === 'More' ? 'bodyBtn selected' :
+            'bodyBtn'}>More</button>
         </Link>
         <Link to='/new-campaign'>
           <button onClick={event => this.getState(event)}
@@ -90,6 +92,9 @@ class CampaignsHome extends Component {
         <Fragment>
           <Route path='/campaigns' render={(routerProps) => {
             return <MainCampaign {...routerProps} />
+          }} />
+          <Route path='/more-campaigns' render={(routerProps) => {
+            return <MoreCampaigns {...routerProps} getState={this.getState} />
           }} />
           <Route path='/new-campaign' render={(routerProps) => {
             return <NewCampaignForm {...routerProps} getState={this.getState} />
