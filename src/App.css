@@ -143,6 +143,7 @@ input.level {
   padding: 0.5em 0;
   padding-left: 0.5em;
   margin-left: 0.5em;
+  width: 2.4em;
 }
 
 .charDiv#Strength, .charDiv#Intelligence {
@@ -315,7 +316,7 @@ input.level {
 
 #characterDesc {
   position: absolute;
-  width: 28em;
+  width: 28.5em;
   top: 23em;
   resize: none;
 }
@@ -327,7 +328,7 @@ input.level {
 
 #ptsRemain {
   position: absolute;
-  margin-top: 20.7em;
+  margin-top: 21em;
   margin-left: 20em;
 }
 
