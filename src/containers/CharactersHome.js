@@ -40,8 +40,8 @@ class CharactersHome extends Component {
   render() {
     return (
       <div>
-        <Link to='/new-characters'>
-          <button id='campaignBtn'>Create New</button>
+        <Link to='/new-character'>
+          <button className='bodyBtn' id='characterBtn'>Create</button>
         </Link>
         {
           this.props.loadState ?

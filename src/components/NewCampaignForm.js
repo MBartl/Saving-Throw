@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 
 class newCampaignForm extends Component {
 
+  componentDidMount() {
+    this.props.getState("New")
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
 
@@ -41,7 +45,7 @@ class newCampaignForm extends Component {
     return (
       <Fragment>
         <Link to='campaigns'>
-          <button id='campaignBtn'>Back</button>
+          <button onClick={() => this.props.getState("Home")} className='bodyBtn' id='campaignBack'>Back</button>
         </Link>
         <form id='campaignForm' onSubmit={this.handleSubmit}>
           <label value='name'>Name</label>

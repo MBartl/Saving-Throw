@@ -280,11 +280,11 @@ class NewCharacterForm extends Component {
 
   render() {
     const stats = ['STR+', 'DEX+', 'CON+', 'INT+', 'WIS+', 'CHA+']
-    const statsToFull = [{'STR+': 'Strength'}, {'DEX+': 'Dexterity'}, {'CON+': 'Constitution'}, {'INT+': 'Intelligence'}, {'WIS+': 'Wisdom'}, {'CHA+': 'Charisma'}]
+    // const statsToFull = [{'STR+': 'Strength'}, {'DEX+': 'Dexterity'}, {'CON+': 'Constitution'}, {'INT+': 'Intelligence'}, {'WIS+': 'Wisdom'}, {'CHA+': 'Charisma'}]
     return (
       <Fragment>
         <Link to='characters'>
-          <button id='characterBtn'>Back</button>
+          <button id='characterBack'>Back</button>
         </Link>
         <form id='characterForm'>
           <div id='charNameInput'>
@@ -310,7 +310,7 @@ class NewCharacterForm extends Component {
               <h3 className='charHeader'>Class</h3>
             </label>
             <label value='playerRace' id='raceHeader'>
-              <h3 className='charHeader' style={{marginLeft: '4.6em'}}>Race</h3>
+              <h3 className='charHeader' style={{marginLeft: '10.85em'}}>Race</h3>
             </label><br />
 
             <div>
@@ -336,12 +336,12 @@ class NewCharacterForm extends Component {
             <br /><br />
 
             <label value='playerClass'>
-              <h3 className='charHeader' style={{marginLeft: '3em'}}>Subclass</h3>
+              <h3 className='charSubheader' style={{marginLeft: '3em'}}>Subclass</h3>
             </label>
             {
               this.state.subraces.length > 0 ?
                 <label value='playerRace' id='raceHeader'>
-                  <h3 className='charHeader' style={{marginLeft: '2.9em'}}>Subrace</h3>
+                  <h3 className='charSubheader' style={{marginLeft: '10em'}}>Subrace</h3>
                   <br />
                 </label>
               :
@@ -405,7 +405,7 @@ class NewCharacterForm extends Component {
             }
           </div>
           <br /><br />
-          <h5 className='charHeader' id='ptsRemain'>
+          <h5 id='ptsRemain'>
             Points Remaining: {this.state.points}</h5>
           <button value='submit' id='characterSubmit' onClick={this.handleSubmit}>Next</button>
         </form>

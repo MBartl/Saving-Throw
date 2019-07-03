@@ -9,7 +9,6 @@ import Loader from '../components/Loader'
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
 
-import NewCampaignForm from '../components/NewCampaignForm';
 import NewCharacterForm from '../components/NewCharacterForm';
 
 import { url } from '../route'
@@ -64,12 +63,12 @@ class Body extends Component {
                 return <CampaignsHome {...routerProps} />
               }} />
               <Route path='/new-campaign' render={(routerProps) => {
-                return <NewCampaignForm {...routerProps} />
+                return <CampaignsHome {...routerProps} />
               }} />
               <Route path='/characters' render={(routerProps) => {
                 return <CharactersHome {...routerProps} />
               }} />
-              <Route path='/new-characters' render={(routerProps) => {
+              <Route path='/new-character' render={(routerProps) => {
                 return <NewCharacterForm {...routerProps} />
               }} />
               <Redirect from='/' to='/home' />

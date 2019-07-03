@@ -101,8 +101,16 @@ input.level {
   display: inline;
   margin: 0px 0px 0px 3.8em;
   height: 0px;
-  position: relative;
-  top: 11em;
+  position: absolute;
+  top: 23.4em;
+}
+
+.charSubheader {
+  display: inline;
+  margin: 0px 0px 0px 3.8em;
+  height: 0px;
+  position: absolute;
+  top: 26.8em;
 }
 
 .charHeader.as {
@@ -155,6 +163,17 @@ input.level {
 
 .charInput#Charisma {
   margin-left: 1.73em;
+}
+
+.bodyBtn {
+  margin-top: 2em;
+  width: 6em;
+  margin-left: 0;
+  font-size: 95%;
+}
+
+.bodyBtn.selected {
+  background-color: darkgrey;
 }
 
 #home {
@@ -214,16 +233,17 @@ input.level {
   margin-top: 1em;
 }
 
-#campaignBtn, #characterBtn {
+#campaignHome, #characterBtn, #campaignBack, #characterBack {
   margin-left: 2em;
-  margin-top: 2em;
-  width: 8em;
-  font-size: 95%;
 }
 
 #campaignForm, #characterForm {
   padding-top: 1em;
   width: 60%;
+}
+
+#characterBack {
+  margin-top: 2em;
 }
 
 #characterForm {
@@ -307,7 +327,7 @@ input.level {
 
 #ptsRemain {
   position: absolute;
-  margin-top: 42.6em;
+  margin-top: 20.7em;
   margin-left: 20em;
 }
 

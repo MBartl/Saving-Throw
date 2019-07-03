@@ -1,13 +1,20 @@
 import React, { Component, Fragment } from 'react';
+import { Route } from 'react-router-dom';
 
 import { url } from '../route'
 import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 
+import MainCampaign from '../components/MainCampaign'
+import NewCampaignForm from '../components/NewCampaignForm';
 import Loader from '../components/Loader'
 
 class CampaignsHome extends Component {
+
+  state = {
+    nav: 'Home'
+  }
 
   componentDidMount(){
     const token = localStorage.getItem('token')
@@ -42,49 +49,52 @@ class CampaignsHome extends Component {
     }
   }
 
+  getState = (event) => {
+    let state
+
+    if (event.target) {
+      state = event.target.innerText
+      this.changeState(state)
+    }
+    else {
+      this.changeState(event)
+    }
+  }
+
+  changeState = (state) => {
+    this.setState({
+      nav: state
+    })
+  }
+
   render() {
     return (
       <div>
-        <Link to='/new-campaign'>
-          <button id='campaignBtn'>Create New</button>
+        <Link to='/campaigns'>
+          <button id='campaignHome' onClick={event => this.getState(event)}
+            className={this.state.nav === 'Home' ? 'bodyBtn selected' :
+            'bodyBtn'}>Home</button>
         </Link>
-        {
-          this.props.loadState ?
-            <Loader />
-          :
-          this.props.campaigns.length !== 0 ?
-            <Fragment>
-              <h2>Campaigns you DM:</h2>
-              <ul>
-                {this.props.campaigns.map((campaign, index) => {
-                  return <li key={index}>{campaign.name}</li>
-                })}
-              </ul>
-            </Fragment>
-          :
-          null
-        }
-        {
-          this.props.loadState ?
-            null
-          :
-          this.props.characterCampaigns.length !== 0 ?
-            <Fragment>
-              <h2>Your Character's Campaigns:</h2>
-              <ul>
-                {this.props.characterCampaigns.map((campaign, index) => {
-                  return <li key={index}>{campaign.name}</li>
-                })}
-              </ul>
-            </Fragment>
-          :
-          null
-        }
-        {
-          !this.props.campaigns && !this.props.characterCampaigns && !this.props.loadState ?
-          <h2>You don't have any campaigns yet</h2>
+        <Link to='/all-campaigns'>
+          <button className='bodyBtn'>All</button>
+        </Link>
+        <Link to='/new-campaign'>
+          <button onClick={event => this.getState(event)}
+            className={this.state.nav === 'New' ? 'bodyBtn selected' :
+            'bodyBtn'}>New</button>
+        </Link>
+        { this.props.loadState ?
+          <Loader />
+
         :
-          null
+        <Fragment>
+          <Route path='/campaigns' render={(routerProps) => {
+            return <MainCampaign {...routerProps} />
+          }} />
+          <Route path='/new-campaign' render={(routerProps) => {
+            return <NewCampaignForm {...routerProps} getState={this.getState} />
+          }} />
+        </Fragment>
         }
       </div>
     );
