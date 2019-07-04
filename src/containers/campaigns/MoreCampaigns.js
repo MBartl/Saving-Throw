@@ -21,7 +21,8 @@ class MoreCampaigns extends Component {
       headers: {'Authorization': token}
     })
     .then(res => res.json())
-    .then(doc => this.props.discoverCampaigns(doc.campaigns));
+    .then(doc => this.props.discoverCampaigns(doc.campaigns))
+    .then(this.props.discoverLoad());
   };
 
   pageResults = () => {
@@ -29,7 +30,6 @@ class MoreCampaigns extends Component {
     const page = this.state.currentPage;
     const results = (page-1)*5;
 
-    this.props.discoverLoad();
     return discover.slice(results, results+5);
   };
 

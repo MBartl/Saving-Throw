@@ -9,7 +9,6 @@ class HomePage extends Component {
 
   componentDidMount() {
     this.props.setCharacters();
-    this.props.setCampaigns();
   };
 
   render() {
