@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 
 import HomePage from './HomePage';
-import CampaignsHome from './CampaignsHome';
-import CharactersHome from './CharactersHome'
 
-import Loader from '../components/Loader'
+import Loader from '../Loader';
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
 
+import CampaignsHome from './campaigns/CampaignsHome';
+
+import CharactersHome from './characters/CharactersHome';
 import NewCharacterForm from '../components/NewCharacterForm';
 
-import { url } from '../route'
-
+import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
+import { url } from '../route';
 import { connect } from 'react-redux';
+
 
 class Body extends Component {
 
@@ -30,69 +31,78 @@ class Body extends Component {
       body: JSON.stringify(userInput)
     })
     .then(res => res.json())
-    .then(response => {
+    .then((response) => {
       if (response.errors) {
-        const errors = response.errors.split('<<|>>')
-        alert(errors)
+        const errors = response.errors.split('<<|>>');
+        alert(errors);
       } else {
-        localStorage.setItem("token", response.jwt)
-        this.props.login(response.user)
-        this.props.history.push('/home')
-      }
-    })
-  }
+        localStorage.setItem("token", response.jwt);
+        this.props.login(response.user);
+
+        if (response.path === 'signup'|| response.path === 'login') {
+          // Add new user routine for signup path
+          this.props.history.push('/home');
+        };
+      };
+    });
+  };
 
   render() {
     return (
-        <div id='body'>
-          {
-            this.props.loadState ?
-              <Loader />
-            :
-            <Switch>
-              <Route path='/home' render={(routerProps) => {
-                return <HomePage {...routerProps} />
-              }} />
-              <Route path='/login' render={(routerProps) => {
-                return <LogInForm signIn={this.signIn} {...routerProps} />
-              }} />
-              <Route path='/signup' render={(routerProps) => {
-                return <SignUpForm signIn={this.signIn} {...routerProps} />
+      <div id='body'>
+        {
+          this.props.loadState ?
+            <Loader />
+          :
+          <Switch>
+            <Route path='/home' render={(routerProps) => {
+              return <HomePage {...routerProps} setCampaigns={this.props.setCampaigns}
+                setCharacters={this.props.setCharacters}/>
+            }} />
+            <Route path='/login' render={(routerProps) => {
+              return <LogInForm signIn={this.signIn} {...routerProps} />
+            }} />
+            <Route path='/signup' render={(routerProps) => {
+              return <SignUpForm signIn={this.signIn} {...routerProps} />
+            }} />
+
+            <Route path='/(campaigns|more-campaigns|new-campaign)/'
+              render={(routerProps) => {
+                return <CampaignsHome {...routerProps}
+                  setCampaigns={this.props.setCampaigns}
+                  setCharacters={this.props.setCharacters} />
               }} />
 
-              <Route path='/(campaigns|more-campaigns|new-campaign)/'
-                render={(routerProps) => {
-                  return <CampaignsHome {...routerProps} />
-                }} />
-              <Route path='/characters' render={(routerProps) => {
-                return <CharactersHome {...routerProps} />
-              }} />
-              <Route path='/new-character' render={(routerProps) => {
-                return <NewCharacterForm {...routerProps} />
-              }} />
-              <Redirect from='/' to='/home' />
-            </Switch>
-          }
-        </div>
-      // }
+            <Route path='/characters' render={(routerProps) => {
+              return <CharactersHome {...routerProps}
+                setCharacters={this.props.setCharacters}
+                setCampaigns={this.props.setCampaigns} />
+            }} />
+            <Route path='/new-character' render={(routerProps) => {
+              return <NewCharacterForm {...routerProps} />
+            }} />
+            <Redirect from='/' to='/home' />
+          </Switch>
+        }
+      </div>
     );
-  }
-}
+  };
+};
 
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
-    user: state.user
-  }
-}
+    user: state.user,
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     login: (user) => {
       dispatch({ type: 'LOG_IN', payload: user })
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,

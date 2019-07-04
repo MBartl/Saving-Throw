@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+
 class Sidebar extends Component {
 
   render() {
@@ -29,16 +30,18 @@ class Sidebar extends Component {
         }
       </div>
     );
-  }
+  };
 
-}
+};
 
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
+    charLoadState: state.load.characterLoading,
+    campLoadState: state.load.campaignLoading,
     user: state.user.currentUser
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps

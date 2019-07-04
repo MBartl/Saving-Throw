@@ -7,11 +7,11 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { BrowserRouter, Route } from 'react-router-dom';
-import thunk from 'redux-thunk';
 
+import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
 
-const middleware = [thunk]
+const middleware = [thunk];
 
 const store = createStore(rootReducer(), composeWithDevTools(
   applyMiddleware(...middleware)

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
+import Loader from '../Loader';
+
 import { connect } from 'react-redux';
 
-import Loader from '../components/Loader'
 
 class HomePage extends Component {
+
+  componentDidMount() {
+    this.props.setCharacters();
+    this.props.setCampaigns();
+  };
 
   render() {
     return (
@@ -21,15 +27,15 @@ class HomePage extends Component {
         }
       </div>
     );
-  }
+  };
 
-}
+};
 
 const mapStateToProps = state => {
   return {
     user: state.user
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps

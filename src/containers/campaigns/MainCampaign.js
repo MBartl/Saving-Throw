@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
+
 import { connect } from 'react-redux';
+
 
 class MainCampaign extends Component {
 
@@ -43,17 +45,17 @@ class MainCampaign extends Component {
         }
       </Fragment>
     );
-  }
+  };
 
-}
+};
 
 const mapStateToProps = state => {
   return {
     loadState: state.load.campaignLoading,
     campaigns: state.campaign.campaigns,
     characterCampaigns: state.campaign.characterCampaigns
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -66,8 +68,8 @@ const mapDispatchToProps = dispatch => {
     setCharacterCampaigns: (characterCampaigns) => {
       dispatch({ type: 'SET_CHARACTER_CAMPAIGNS', payload: characterCampaigns })
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,

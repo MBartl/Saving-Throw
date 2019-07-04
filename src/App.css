@@ -35,6 +35,7 @@ button {
   margin-right: 0.4em;
   margin-left: 0.4em;
   width: 7.4em;
+  height: 2.496em;
 }
 
 .formBtn {
@@ -65,7 +66,7 @@ button {
   width: 2em;
   height: 2em;
   padding: 0;
-  border-radius: 0.75em;
+  border-radius: 1em;
   display: inline;
   position: absolute;
   top: 28.6em;
@@ -195,6 +196,10 @@ input.level {
   cursor: pointer;
 }
 
+.discoverToggle {
+  margin-left: 2em;
+}
+
 #home {
   float: left;
 }
@@ -261,18 +266,21 @@ input.level {
 }
 
 #characterBack {
-  margin-top: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
 }
 
 #characterForm {
-  width: 70%;
-  max-width: 40em;
-  min-width: 33em;
+  width: 30em;
+  padding-bottom: 21em;
+  padding-left: 1.5em;
+  border-style: solid;
+  border-width: thin;
 }
 
 #nameImg {
   height: 7.8em;
-  border-radius: 2.5em;
+  border-radius: 3em;
   position: absolute;
   top: 12.6em;
 }
@@ -286,7 +294,7 @@ input.level {
   color: black;
   position: absolute;
   top: 16.2em;
-  left: 13em;
+  left: 14.75em;
   height: 0.33em;
   width: 13.2em;
   border-style: inset;
@@ -308,27 +316,27 @@ input.level {
 #classDisplay {
   position: absolute;
   top: 29.3em;
-  left: 13.8em;
+  left: 15.22em;
 }
 
 #raceDisplay {
   position: absolute;
   top: 29.3em;
-  left: 27em;
+  left: 28.7em;
 }
 
 #subclassDisplay {
   position: absolute;
   font-size: 95%;
   top: 35em;
-  left: 14.5em;
+  left: 16.1em;
 }
 
 #subraceDisplay {
   position: absolute;
   font-size: 95%;
   top: 35em;
-  left: 28.4em;
+  left: 30.2em;
 }
 
 #characterDesc {
@@ -345,11 +353,12 @@ input.level {
 
 #ptsRemain {
   position: absolute;
-  margin-top: 21em;
+  margin-top: 21.5em;
   margin-left: 20em;
 }
 
 #characterSubmit {
   position: absolute;
   top: 44.5em;
+  margin-left: 0
 }

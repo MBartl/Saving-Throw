@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 
+
 class SignUpForm extends Component {
 
   handleSubmit = (e) => {
-    e.preventDefault()
-    let username = e.target.username.value
-    let password = e.target.password.value
-    let confirmation = e.target.confirmation.value
-    let user = {user: {username, password, confirmation}}
+    e.preventDefault();
+    let username = e.target.username.value;
+    let password = e.target.password.value;
+    let confirmation = e.target.confirmation.value;
+    let user = {user: {username, password, confirmation}};
 
-    this.props.signIn(user)
-  }
+    this.props.signIn(user);
+  };
 
   render() {
     return (
@@ -24,8 +25,8 @@ class SignUpForm extends Component {
         <button value='submit' className='formBtn'>Submit</button>
       </form>
     );
-  }
+  };
 
-}
+};
 
 export default SignUpForm;

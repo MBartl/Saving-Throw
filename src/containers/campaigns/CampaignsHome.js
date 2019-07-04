@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { Route } from 'react-router-dom';
 
-import { url } from '../route'
+import MainCampaign from './MainCampaign';
+import MoreCampaigns from './MoreCampaigns';
+
+import NewCampaignForm from '../../components/NewCampaignForm';
+
+import Loader from '../../Loader';
+
+import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Link } from 'react-router-dom';
-
-import MoreCampaigns from './MoreCampaigns';
-import MainCampaign from '../components/MainCampaign';
-import NewCampaignForm from '../components/NewCampaignForm';
-import Loader from '../components/Loader'
 
 class CampaignsHome extends Component {
 
@@ -18,39 +18,12 @@ class CampaignsHome extends Component {
   };
 
   componentDidMount(){
-    if (this.state.nav === 'More' || this.state.nav === 'New') {return}
-    const token = localStorage.getItem('token')
-
-    if (this.props.campaigns.length === 0 &&
-      this.props.characterCampaigns.length === 0) {
-
-      this.props.campaignLoad()
-
-      fetch(url + 'campaigns', {
-        headers: {'Authorization': token}
-      })
-      .then(res => res.json())
-      .then(doc => {
-        if (doc.errors) {
-          alert(doc.errors)
-        } else
-        if (doc.campaigns) {
-          this.props.setCampaign(doc.campaigns)
-        }
-        if (doc.characterCampaigns) {
-          this.props.setCharacterCampaigns(doc.characterCampaigns)
-        }
-      })
-      .then(() => this.props.campaignLoad())
-    }
-    else {
-      this.props.setCampaign(this.props.campaigns)
-      this.props.setCharacterCampaigns(this.props.characterCampaigns)
-    }
-  }
+    this.props.setCampaigns();
+    this.props.setCharacters();
+  };
 
   getState = (event) => {
-    let state
+    let state;
 
     if (event.target) {
       state = event.target.innerText
@@ -58,14 +31,14 @@ class CampaignsHome extends Component {
     }
     else {
       this.changeState(event)
-    }
-  }
+    };
+  };
 
   changeState = (state) => {
     this.setState({
       nav: state
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -103,33 +76,18 @@ class CampaignsHome extends Component {
         }
       </div>
     );
-  }
+  };
 
-}
+};
 
 const mapStateToProps = state => {
   return {
     loadState: state.load.campaignLoading,
     campaigns: state.campaign.campaigns,
     characterCampaigns: state.campaign.characterCampaigns
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    campaignLoad: () => {
-      dispatch({ type: 'CAMPAIGN_LOADING' })
-    },
-    setCampaign: (campaigns) => {
-      dispatch({ type: 'SET_CAMPAIGNS', payload: campaigns })
-    },
-    setCharacterCampaigns: (characterCampaigns) => {
-      dispatch({ type: 'SET_CHARACTER_CAMPAIGNS', payload: characterCampaigns })
-    }
-  }
-}
+  };
+};
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(CampaignsHome);

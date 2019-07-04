@@ -12,5 +12,5 @@ export default function userReducer(
 
     default:
       return state;
-  }
+  };
 };

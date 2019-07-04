@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 
+
 class LogInForm extends Component {
 
   handleSubmit = (e) => {
-    e.preventDefault()
-    let username = e.target.username.value
-    let password = e.target.password.value
-    let user = {auth: {username, password}}
+    e.preventDefault();
+    let username = e.target.username.value;
+    let password = e.target.password.value;
+    let user = {auth: {username, password}};
 
-    this.props.signIn(user)
-  }
+    this.props.signIn(user);
+  };
 
   render() {
     return (
@@ -21,8 +22,8 @@ class LogInForm extends Component {
         <button value='submit' className='formBtn'>Submit</button>
       </form>
     );
-  }
+  };
 
-}
+};
 
 export default LogInForm;

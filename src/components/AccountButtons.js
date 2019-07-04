@@ -3,12 +3,13 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+
 class AccountButtons extends Component {
 
   logOut = () => {
-    this.props.logOut(this.props.user)
-    localStorage.removeItem("token")
-  }
+    this.props.logOut(this.props.user);
+    localStorage.removeItem("token");
+  };
 
   render() {
     return (
@@ -40,21 +41,21 @@ class AccountButtons extends Component {
         }
       </Fragment>
     );
-  }
+  };
 
-}
+};
 
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
     user: state.user
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     logOut: (token) => {
       dispatch({type: 'LOG_OUT', payload: token})
     }
-  }
-}
+  };
+};

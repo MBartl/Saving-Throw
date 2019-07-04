@@ -1,25 +1,25 @@
 import React, { Component, Fragment } from 'react';
 
 import { Link } from 'react-router-dom';
-
-import { url } from '../route'
+import { url } from '../route';
 import { connect } from 'react-redux';
+
 
 class newCampaignForm extends Component {
 
   componentDidMount() {
     this.props.getState("New")
-  }
+  };
 
   handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
 
-    let name = e.target.name.value
-    let description = e.target.description.value
-    let max_players = e.target.max_players.value
-    let campaign = {campaign: {name, description, max_players}}
+    let name = e.target.name.value;
+    let description = e.target.description.value;
+    let max_players = e.target.max_players.value;
+    let campaign = {campaign: {name, description, max_players}};
 
     fetch(url + 'campaigns', {
       method: 'POST',
@@ -38,8 +38,8 @@ class newCampaignForm extends Component {
       this.props.addCampaign(campaign)
       this.props.history.push('/campaigns')
       }
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -58,17 +58,17 @@ class newCampaignForm extends Component {
         </form>
       </Fragment>
     );
-  }
+  };
 
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     addCampaign: (campaign) => {
       dispatch({ type: 'ADD_CAMPAIGN', payload: campaign })
     }
-  }
-}
+  };
+};
 
 export default connect(
   null,
