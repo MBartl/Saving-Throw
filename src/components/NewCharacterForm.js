@@ -13,15 +13,12 @@ class NewCharacterForm extends Component {
     classIndex: 0,
     raceIndex: 0,
     subraceIndex: 0,
-    class: 'Barbarian',
-    subclass: 'Berserker',
-    race: 'Dwarf',
     subraces: ['Hill Dwarf', 'Mountain'],
     abilityScores: [{key: 'Strength', value: 8}, {key: 'Dexterity', value: 8},
-    {key: 'Constitution', value: 8}, {}, {key: 'Intelligence', value: 8},
-    {key: 'Wisdom', value: 8}, {key: 'Charisma', value: 8}],
+    {key: 'Constitution', value: 10}, {}, {key: 'Intelligence', value: 8},
+    {key: 'Wisdom', value: 9}, {key: 'Charisma', value: 8}],
     bonus: [0, 0, 2, null, 0, 1, 0],
-    max: [15, 15, 17, null, 15, 16, 0],
+    max: [15, 15, 17, null, 15, 16, 15],
     min: [8, 8, 10, null, 8, 9, 8],
     points: 27
   }
@@ -31,15 +28,22 @@ class NewCharacterForm extends Component {
     e.preventDefault()
 
     const token = localStorage.getItem('token')
+    const currentRace = this.displayRace(this.state.raceIndex)
+    const subraceText = this.displaySubrace(this.state.subraceIndex)
+    let currentSubrace;
+    if (subraceText.split(' ')[1].length > 2) {
+      currentSubrace = subraceText.split(' ')[1] + ' ' + currentRace
+    }
+    if (currentSubrace === 'Dark Elf') {currentSubrace = 'Dark Elf (Drow)'}
 
     const name = e.target.parentElement.name.value
     const biography = e.target.parentElement.biography.value
     const level = this.state.lvl
-    const player_class = this.state.class
-    const race = this.state.race
-    const subclass = this.state.subclass
-    const subrace = this.state.subraces[this.state.subraceIndex]
-    const ability_score = this.state.abilityScores.filter(score => score.value).map((score, index) => score.value + this.state.bonus[index]).join(', ')
+    const player_class = this.displayClass(this.state.classIndex)
+    const race = this.displayRace(this.state.raceIndex)
+    let subclass = this.displaySubclass(this.state.classIndex)
+    const subrace = currentSubrace
+    const ability_score = this.state.abilityScores.filter(score => score.value).map((score, index) => score.value).join(', ')
 
     const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}}
 
@@ -65,37 +69,35 @@ class NewCharacterForm extends Component {
 
   // Class options
   toggleClass = (increment) => {
+    let classIndex;
+
     if (this.state.classIndex < 1 && increment === -1) {
-      this.setState({
-        classIndex: 11
-      }, () => this.setClass())
-    } else if (this.state.classIndex > 10 && increment === 1) {
-      this.setState({
-        classIndex: 0
-      }, () => this.setClass())
-    } else {
-      this.setState({
-        classIndex: this.state.classIndex+increment
-      }, () => this.setClass())
+      classIndex = 11
     }
+    else if (this.state.classIndex > 10 && increment === 1) {
+      classIndex = 0
+    }
+    else {
+      classIndex = this.state.classIndex+increment
+    }
+
+    this.setClass(classIndex)
   }
 
-  setClass = () => {
-    const subclasses = ['Berserker', 'Lore', 'Life', 'Land', 'Champion', 'Open Hand', 'Devotion', 'Hunter', 'Thief', 'Draconic', 'Fiend', 'Evocation']
-
+  setClass = (classIndex) => {
     this.setState({
-      class: this.displayClass(),
-      subclass: subclasses[this.state.classIndex]
+      classIndex: classIndex,
+      class: this.displayClass(classIndex)
     })
   }
 
-  displayClass = () => {
+  displayClass = (classIndex) => {
     const classes = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard']
 
-    return classes[this.state.classIndex]
+    return classes[classIndex]
   }
 
-  // Subclass display
+  // Subclass Options
   displaySubclass = () => {
     const subclasses = ['Berserker', 'Lore', 'Life', 'Land', 'Champion', 'Open Hand', 'Devotion', 'Hunter', 'Thief', 'Draconic', 'Fiend', 'Evocation']
 
@@ -103,59 +105,57 @@ class NewCharacterForm extends Component {
   }
 
   // Race options
-  setRace = () => {
-    this.setState({
-      race: this.displayRace()
-    }, () => this.setSubrace())
+  toggleRace = (increment) => {
+    let raceIndex;
+
+    if (this.state.raceIndex < 1 && increment === -1) {
+      raceIndex = 8
+    }
+    else if (this.state.raceIndex > 7 && increment === 1) {
+      raceIndex = 0
+    } else {
+      raceIndex = this.state.raceIndex+increment
+    }
+
+    this.setRace(raceIndex)
   }
 
-  displayRace = () => {
+  setRace = (raceIndex) => {
+    this.setState({
+      raceIndex: raceIndex,
+      subraceIndex: 0
+    }, () => this.findSubraces(raceIndex))
+  }
+
+  displayRace = (raceIndex) => {
     const races = ['Dwarf', 'Elf', 'Halfling', 'Human', 'Dragonborn', 'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling'];
 
-    return races[this.state.raceIndex];
-  }
-
-  toggleRace = (increment) => {
-    if (this.state.raceIndex < 1 && increment === -1) {
-      this.setState({
-        raceIndex: 8,
-        subraceIndex: 0
-      }, () => this.setRace(), () => this.setSubrace())
-    } else if (this.state.raceIndex > 7 && increment === 1) {
-      this.setState({
-        raceIndex: 0,
-        subraceIndex: 0
-      }, () => this.setRace(), () => this.setSubrace())
-    } else {
-      this.setState({
-        raceIndex: this.state.raceIndex+increment,
-        subraceIndex: 0
-      }, () => this.setRace(), () => this.setSubrace())
-    }
+    return races[raceIndex];
   }
 
   // Subrace options
-  setSubrace = () => {
-    if (this.state.race === 'Dwarf') {
-      this.setState({
-        subraces: ['Hill Dwarf', 'Mountain']
-      }, () => this.getBonuses())
+  findSubraces = (raceIndex) => {
+    let subraces;
+    if (this.state.raceIndex === 0) {
+      subraces = ['Hill Dwarf', 'Mountain']
     }
-    else if (this.state.race === 'Halfling') {
-      this.setState({
-        subraces: ['Lightfoot']
-      }, () => this.getBonuses())
+    else if (this.state.raceIndex ===  1) {
+      subraces = ['High Elf', 'Wood Elf', 'Dark Elf']
     }
-    else if (this.state.race ===  'Elf') {
-      this.setState({
-        subraces: ['High Elf', 'Wood Elf', 'Dark Elf']
-      }, () => this.getBonuses())
+    else if (this.state.raceIndex === 2) {
+      subraces = ['Lightfoot']
     }
     else {
-      this.setState({
-        subraces: []
-      }, () => this.getBonuses())
+      subraces = []
     }
+
+    this.setSubraces(subraces, raceIndex)
+  }
+
+  setSubraces = (subraces, raceIndex) => {
+    this.setState({
+      subraces: subraces
+    }, () => this.applyBonuses(raceIndex))
   }
 
   displaySubrace = () => {
@@ -163,137 +163,211 @@ class NewCharacterForm extends Component {
   }
 
   toggleSubrace = (increment) => {
-    if (this.state.subraceIndex < 1 && increment === -1) {
-      this.setState({
-        subraceIndex: this.state.subraces.length-1
-      }, () => this.setRace(), () => this.setSubrace())
-    } else if (this.state.subraceIndex > this.state.subraces.length-2
-      && increment === 1) {
-      this.setState({
-        subraceIndex: 0
-      }, () => this.setRace(), () => this.setSubrace())
-    } else {
-      this.setState({
-        subraceIndex: this.state.subraceIndex+increment
-      }, () => this.setRace(), () => this.setSubrace())
+    let subraceIndex = this.state.subraceIndex
+    const length = this.state.subraces.length-1
+
+    if (subraceIndex < 1 && increment === -1) {
+      subraceIndex = length
     }
+    else if (subraceIndex === length && increment === 1) {
+      subraceIndex = 0
+    } else {
+      subraceIndex = this.state.subraceIndex+increment
+    }
+
+    this.setState({
+      subraceIndex: subraceIndex
+    }, () => this.applyBonuses(subraceIndex))
+  }
+
+  returnSubrace = (subraceIndex) => {
+    return this.state.subraces[subraceIndex]
   }
 
   // Race and subrace bonuses
-  getBonuses = () => {
+  getRaceBonuses = (raceIndex) => {
     const raceBonuses = [
-      {'Dwarf': [0, 0, 2, null, 0, 0, 0]},
-      {'Elf': [0, 2, 0, null, 0, 0, 0]},
-      {'Halfling': [0, 2, 0, null, 0, 0, 0]},
-      {'Human': [1, 1, 1, null, 1, 1, 1]},
-      {'Dragonborn': [2, 0, 0, null, 0, 0, 1]},
-      {'Gnome': [0, 0, 0, null, 2, 0, 0]},
-      {'Half-Elf': [0, 0, 0, null, 0, 0, 2]},
-      {'Half-Orc': [2, 0, 1, null, 0, 0, 0]},
-      {'Tiefling': [0, 0, 0, null, 1, 0, 2]}
+      [0, 0, 2, null, 0, 0, 0],
+      [0, 2, 0, null, 0, 0, 0],
+      [0, 2, 0, null, 0, 0, 0],
+      [1, 1, 1, null, 1, 1, 1],
+      [2, 0, 0, null, 0, 0, 1],
+      [0, 0, 0, null, 2, 0, 0],
+      [0, 0, 0, null, 0, 0, 2],
+      [2, 0, 1, null, 0, 0, 0],
+      [0, 0, 0, null, 1, 0, 2]
     ]
 
-    const subBonuses = [
-      {'Hill Dwarf': [0, 0, 0, null, 0, 1, 0]},
-      {'High Elf': [0, 0, 0, null, 1, 0, 0]},
-      {'Lightfoot': [0, 0, 0, null, 0, 0, 1]},
-      {'Mountain': [2, 0, 0, null, 0, 0, 0]},
-      {'Wood Elf': [0, 0, 0, null, 0, 1, 0]},
-      {'Dark Elf': [0, 0, 0, null, 0, 0, 1]}
-    ]
-
-    const race = this.state.race
-    const subrace = this.state.subraces[this.state.subraceIndex]
-
-    let total
-    const bonus = raceBonuses[raceBonuses.findIndex(r => Object.keys(r)[0] === race)]
-    if (this.state.subraces.length > 0) {
-      const sub = subBonuses[subBonuses.findIndex(s => Object.keys(s)[0] === subrace)]
-      total = bonus[race].map((stat, index) => sub[subrace][index] > stat ? sub[subrace][index] : stat)
-    } else {
-      total = bonus[race]
+    let index
+    if (typeof raceIndex !== 'undefined' &&
+    raceIndex !== this.state.raceIndex) {
+      index = this.state.raceIndex
+    }
+    else {
+      index = this.state.raceIndex
     }
 
-    this.setState({
-      bonus: total
-    })
+    return raceBonuses[index]
   }
 
-  // Handle bility score changes
-  handleChange = (e, ability) => {
-    e.preventDefault()
+  getSubraceBonus = (subraceIndex) => {
+    const subrace = this.displaySubrace(this.state.subraceIndex)
+    const subBonuses = [
+      {'Hill Dwarf': [0, 0, 0, null, 0, 1, 0]},
+      {'Mountain': [2, 0, 0, null, 0, 0, 0]},
+      {'High Elf': [0, 0, 0, null, 1, 0, 0]},
+      {'Wood Elf': [0, 0, 0, null, 0, 0, 1]},
+      {'Dark Elf': [0, 0, 0, null, 0, 1, 0]},
+      {'Lightfoot': [0, 0, 0, null, 0, 0, 1]}
+    ]
 
-    let index = this.state.abilityScores.findIndex(s => s.key === ability.key);
+    let index = subBonuses.findIndex(s => Object.keys(s)[0] === subrace)
+
+    return subBonuses[index][subrace]
+  }
+
+  // Ability score functions
+  renderAbilityScore = (index) => {
+    return this.state.abilityScores[index] + this.state.bonus[index]
+  }
+
+  checkKeyPress = (e, ability) => {
+    if (e.charCode === 13) {
+      e.preventDefault()
+      this.handleAbilityScoreChange(e, ability)
+    }
+    else if (e.charCode > 47 && e.charCode < 58) (
+      this.handleAbilityScoreChange(e, ability)
+    )
+  }
+
+  handleAbilityScoreChange = (e, ability) => {
+    const index = this.state.abilityScores.findIndex(s => s.key === ability.key);
     let newValue = parseInt(e.target.value)
-    let oldValue = this.state.abilityScores[index].value
-    let singlePointChange;
+    const oldValue = this.state.abilityScores[index].value
 
     if (newValue > 999) {
-      alert("You can't go that high!\nYou're going to break the 'points remaining' counter!\n¯\\_(ツ)_/¯")
+      alert("You can't go that high!")
+      return
     }
 
     if (isNaN(newValue)) {
+      newValue = ''
+    }
+
+    this.changeScore(ability, index, newValue, oldValue)
+  }
+
+  changeScore(ability, index, newValue, oldValue) {
+    let ptChange;
+
+    if (newValue+1 === oldValue || newValue-1 === oldValue) {
+      if (newValue > oldValue) {newValue > 13 ? ptChange = -2 : ptChange = -1}
+      else {newValue > 12 ? ptChange = 2 : ptChange = 1}
+
+      if (this.state.points-ptChange < 0) {
+        alert('Not enough points')
+        return
+      }
+
       let scores = this.state.abilityScores;
-      scores.splice(index, 1, {key: ability.key, value: ''})
+      scores.splice(index, 1, {key: ability.key, value: newValue})
 
-      this.handleNaNinput(oldValue, scores)
-    } else {
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+ptChange
+      })
+    }
 
-      if (newValue+1 === oldValue ||
-        newValue-1 === oldValue) {
-        if (newValue > oldValue)
-          {newValue > 13 ? singlePointChange = -2 : singlePointChange = -1}
-        else
-          {newValue > 12 ? singlePointChange = 2 : singlePointChange = 1}
+    else {
+      ptChange = oldValue - newValue
 
-        let scores = this.state.abilityScores;
-        scores.splice(index, 1, {key: ability.key, value: newValue})
+      if (newValue > oldValue && newValue-13 > 0) {ptChange = ptChange-(newValue-13)}
+      else if (newValue < oldValue && oldValue-13 > 0) {ptChange = ptChange+oldValue-13}
 
-        this.setState({
-          abilityScores: [...scores],
-          points: this.state.points+singlePointChange
-        })
-      }
+      let scores = this.state.abilityScores;
+      scores.splice(index, 1, {key: ability.key, value: newValue});
 
-      else {
-        let multiPointChange = oldValue - newValue
-
-        if (newValue > oldValue && newValue-13 > 0)
-        {multiPointChange = multiPointChange-(newValue-13)}
-
-        else if (newValue < oldValue && oldValue-13 > 0)
-        {multiPointChange = multiPointChange+oldValue-13}
-
-        let scores = this.state.abilityScores;
-        scores.splice(index, 1, {key: ability.key, value: newValue});
-
-        this.setState({
-          abilityScores: [...scores],
-          points: this.state.points+multiPointChange
-        })
-      }
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+ptChange
+      })
     }
   }
 
-  handleNaNinput = (oldValue, scores) => {
+  applyBonuses = (index) => {
+    const bonus = this.combinedBonus(index);
 
-    let max = scores.map(i => i !== null ? i+15 : null)
-    let min = scores.map(i => i !== null ? i+8 : null)
+    const max = this.state.max.map((s, i) => s !== null ? 15+bonus[i] : null)
+    const min = this.state.min.map((s, i) => s !== null ? 8+bonus[i] : null)
 
-    let multiPointChange = oldValue
+    const abilityScore = this.state.abilityScores.map((score, index) => {
+      return (
+        {key: score.key, value: score.value+bonus[index]-this.state.bonus[index]}
+      )
+    })
 
-    if (oldValue-13 > 0)
-      {multiPointChange = multiPointChange+oldValue-13}
+    this.adjustPoints(max, abilityScore)
 
     this.setState({
-      abilityScores: [...scores],
-      points: this.state.points+multiPointChange,
+      abilityScores: abilityScore,
+      bonus: bonus,
       max: max,
       min: min
     })
   }
 
+  adjustPoints(max, abilityScore) {
+    let pointAdjust = 0
+
+    const oldScores = this.state.abilityScores.map(ea => ea.value)
+    const newScores = abilityScore.map(s => s.value)
+    oldScores.forEach((s, i) => s > max[i] ? pointAdjust = pointAdjust+((s-max[i])) : null)
+
+    oldScores.forEach((s, i) => {
+      return (
+        newScores[i] > oldScores[i] && newScores[i] > 13 ?
+        pointAdjust = pointAdjust-(newScores[i]-oldScores[i]) : null
+      )
+    })
+
+    this.setState({
+    points: this.state.points+pointAdjust
+    })
+  }
+
+  combinedBonus = (index) => {
+    let raceBonus = this.getRaceBonuses(this.state.raceIndex);
+    let subraceBonus;
+    if (this.state.subraces.length > 0) {
+      subraceBonus = this.getSubraceBonus(this.state.subraceIndex);
+    };
+
+    if (typeof index !== 'undefined' && index !== this.state.raceIndex) {
+      raceBonus = this.getRaceBonuses(index)
+    }
+    else if (typeof index !== 'undefined' && index !== this.state.subraceIndex &&
+      this.state.subraces.length > 0) {
+      subraceBonus = this.getSubraceBonus(index)
+    };
+
+    let total;
+    if (this.state.subraces.length > 0) {
+      total = subraceBonus.map((bonus, i) => {
+        return (i === 3 ? null : bonus > raceBonus[i] ? bonus : raceBonus[i])
+      })
+      return total
+    } else {
+      return raceBonus
+    };
+  };
+
   handleLevel = (e) => {
+    if (e.target.value > 20) {
+      alert('Max is 20')
+      return
+    }
+
     this.setState({
       lvl: e.target.value
     })
@@ -338,7 +412,9 @@ class NewCharacterForm extends Component {
                 onClick={() => this.toggleClass(-1)}>
                 <span>◀ </span>
               </button>
-              <div id='classDisplay' value='playerClass'>{this.displayClass()}</div>
+              <div id='classDisplay' value='playerClass'>
+                {this.displayClass(this.state.classIndex)}
+              </div>
               <button className='charToggle' type='button' style={{left: '18.5em'}}
                 onClick={() => this.toggleClass(1)}>
                 <span> ▶</span>
@@ -348,7 +424,7 @@ class NewCharacterForm extends Component {
                 onClick={() => this.toggleRace(-1)}>
                 <span>◀ </span>
               </button>
-              <div id='raceDisplay' value='playerRace'>{this.displayRace()}</div>
+              <div id='raceDisplay' value='playerRace'>{this.displayRace(this.state.raceIndex)}</div>
               <button className='charToggle' type='button' style={{left: '32.5em'}} onClick={() => this.toggleRace(1)}>
                 <span> ▶</span>
               </button>
@@ -398,7 +474,7 @@ class NewCharacterForm extends Component {
             <h3 className='charHeader as'>Ability Scores:</h3>
             <h5 className='charHeader as bns'>Bonuses:
               {
-                this.state.race === 'Human' ?
+                this.displayRace(this.state.raceIndex) === 'Human' ?
                   <span className='ea bns'>ALL+1</span> :
                   this.state.bonus.map((stat, index) => {
                     return (
@@ -416,11 +492,14 @@ class NewCharacterForm extends Component {
               this.state.abilityScores.map((ability, index) => {
                 return (
                   index === 3 ? <br key={index}/> :
-                  <div className='charDiv' id={ability.key} key={index}>{ability.key}:
+                  <div className='charDiv' id={ability.key} key={index}>
+                    {ability.key}:
                     <input className='charInput' id={ability.key} type='number'
                       name={ability.key} min={this.state.min[index]} max={this.state.max[index]}
-                      value={this.state.bonus[index] + ability.value}
-                      onChange={(e) => this.handleChange(e, ability)} />
+                      value={ability.value}
+                      onChange={(e) => this.handleAbilityScoreChange(e, ability)}
+                      onKeyPress={(e) => this.checkKeyPress(e, ability)}
+                    />
                   </div>
                 )
               })
