@@ -19,7 +19,6 @@ class CampaignsHome extends Component {
 
   componentDidMount(){
     this.props.setCampaigns();
-    this.props.setCharacters();
   };
 
   getState = (event) => {

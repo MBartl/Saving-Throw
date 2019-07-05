@@ -33,7 +33,7 @@ class Sidebar extends Component {
         }
         { this.props.loadState ? null :
         <Link to='/'>
-          <button className={this.props.user ? 'addSideBtn' : 'sideBtn'}>Compendium</button>
+          <button className={loading || this.props.user ? 'addSideBtn' : 'sideBtn'}>Compendium</button>
         </Link>
         }
       </div>

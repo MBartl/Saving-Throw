@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import CampaignCard from '../../components/CampaignCard';
 import Loader from '../../Loader';
@@ -22,15 +22,15 @@ class MoreCampaigns extends Component {
     })
     .then(res => res.json())
     .then(doc => this.props.discoverCampaigns(doc.campaigns))
-    .then(this.props.discoverLoad());
+    .then(() => this.props.discoverLoad());
   };
 
   pageResults = () => {
     const discover = this.props.discover;
     const page = this.state.currentPage;
-    const results = (page-1)*5;
+    const results = discover.slice((page-1)*5, (page-1)*5+5);
 
-    return discover.slice(results, results+5);
+    return results;
   };
 
   pageInc = (inc) => {
@@ -43,19 +43,41 @@ class MoreCampaigns extends Component {
   render() {
     return (
       <div>
-        { this.state.loading ?
+        { this.props.loading ?
           <Loader />
         :
-        this.pageResults() !== [] ?
-          this.pageResults().map((c, index) => <CampaignCard key={index} campaign={c} />)
-        : null
+        this.pageResults().length !== 0 && !this.props.loading ?
+          <div>
+            <span className='campaignPageCount' id='discoverPageCount'>
+              Page: {this.state.currentPage} of {Math.ceil(this.props.discover.length/5)}
+            </span>
+            <h2>Discover Campaigns:</h2>
+          </div>
+        :
+          null
         }
-        <button
-          disabled={this.state.currentPage === 1 ? true : false}
-          className='discoverToggle' onClick={() => this.pageInc(-1)}>◀◀Prev</button>
-        <button
-          disabled={this.state.currentPage*5 >= this.props.discover.length ? true : false}
-          className='discoverToggle' onClick={() => this.pageInc(1)}>Next▶▶</button>
+        {
+          this.pageResults().length !== 0 ?
+            this.pageResults().map((c, index) => <CampaignCard key={index} campaign={c} />)
+          :
+          null
+        }
+        {
+          this.pageResults().length !== 0 && !this.props.loading ?
+            <Fragment>
+              <button
+                disabled={this.state.currentPage === 1 ? true : false}
+                className='discoverToggle' onClick={() => this.pageInc(-1)}>◀◀Prev</button>
+              <button
+                disabled={this.state.currentPage*5 >= this.props.discover.length ? true : false}
+                className='discoverToggle' onClick={() => this.pageInc(1)}>Next▶▶</button>
+            </Fragment>
+          :
+          this.props.loading ?
+            null
+          :
+          <h2>No new campaigns to discover</h2>
+        }
       </div>
     );
   };

@@ -84,7 +84,10 @@ class App extends Component {
           this.props.setCharacterCampaigns(doc.characterCampaigns)
         }
       })
-      .then(() => this.props.campaignLoad());
+      .then(() => {
+        this.setCharacters();
+        this.props.campaignLoad()}
+      );
     }
     else {
       this.props.setCampaign(this.props.campaigns);

@@ -44,7 +44,11 @@ class Body extends Component {
           this.props.history.push('/home');
         };
       };
-    });
+    })
+    .then(() => {
+      this.props.setCharacters();
+      this.props.setCampaigns()
+    })
   };
 
   render() {
@@ -69,14 +73,12 @@ class Body extends Component {
             <Route path='/(campaigns|more-campaigns|new-campaign)/'
               render={(routerProps) => {
                 return <CampaignsHome {...routerProps}
-                  setCampaigns={this.props.setCampaigns}
-                  setCharacters={this.props.setCharacters} />
+                  setCampaigns={this.props.setCampaigns} />
               }} />
 
             <Route path='/characters' render={(routerProps) => {
               return <CharactersHome {...routerProps}
-                setCharacters={this.props.setCharacters}
-                setCampaigns={this.props.setCampaigns} />
+                setCharacters={this.props.setCharacters} />
             }} />
             <Route path='/new-character' render={(routerProps) => {
               return <NewCharacterForm {...routerProps} />

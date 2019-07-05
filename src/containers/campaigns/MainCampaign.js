@@ -1,22 +1,54 @@
 import React, { Component, Fragment } from 'react';
 
+import CampaignCard from '../../components/CampaignCard';
+
 import { connect } from 'react-redux';
 
 
 class MainCampaign extends Component {
 
+  state = {
+    currentPage: 1
+  };
+
+  pageResults = () => {
+    const allCampaigns = this.combinedCampaigns();
+
+    const page = this.state.currentPage;
+    const results = allCampaigns.slice((page-1)*5, (page-1)*5+5);
+
+    return {campaigns: results.filter(c => this.props.campaigns.includes(c)), characterCampaigns: results.filter(c => this.props.characterCampaigns.includes(c))};
+  };
+
+  combinedCampaigns = () => {
+    return [...this.props.campaigns, ...this.props.characterCampaigns]
+  }
+
+  pageInc = (inc) => {
+
+    this.setState({
+      currentPage: this.state.currentPage+inc
+    });
+  };
+
   render() {
     return (
       <Fragment>
         {
-          this.props.campaigns.length !== 0 ?
+          this.props.campaigns || this.props.characterCampaigns ?
+            <span className='campaignPageCount'>
+              Page: {this.state.currentPage} of {Math.ceil(this.combinedCampaigns().length/5)}
+            </span>
+          : 
+          null
+        }
+        {
+          this.pageResults().campaigns.length !== 0 ?
             <Fragment>
               <h2>Campaigns you DM:</h2>
-              <ul>
-                {this.props.campaigns.map((campaign, index) => {
-                  return <li key={index}>{campaign.name}</li>
-                })}
-              </ul>
+              {this.pageResults().campaigns.map((campaign, index) => {
+                return <CampaignCard key={index} campaign={campaign} />
+              })}
             </Fragment>
           :
           null
@@ -25,14 +57,25 @@ class MainCampaign extends Component {
           this.props.loadState ?
             null
           :
-          this.props.characterCampaigns.length !== 0 ?
+          this.pageResults().characterCampaigns.length !== 0 ?
             <Fragment>
               <h2>Your Character's Campaigns:</h2>
-              <ul>
-                {this.props.characterCampaigns.map((campaign, index) => {
-                  return <li key={index}>{campaign.name}</li>
-                })}
-              </ul>
+              {this.pageResults().characterCampaigns.map((campaign, index) => {
+                return <CampaignCard key={index} campaign={campaign} />
+              })}
+            </Fragment>
+          :
+          null
+        }
+        {
+          this.props.campaigns.length + this.props.characterCampaigns.length > 5 ?
+            <Fragment>
+              <button
+                disabled={this.state.currentPage === 1 ? true : false}
+                className='discoverToggle' onClick={() => this.pageInc(-1)}>◀◀Prev</button>
+              <button
+                disabled={this.state.currentPage*5 >= this.props.campaigns.length + this.props.characterCampaigns.length ? true : false}
+                className='discoverToggle' onClick={() => this.pageInc(1)}>Next▶▶</button>
             </Fragment>
           :
           null
