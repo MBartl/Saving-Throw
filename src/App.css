@@ -173,6 +173,26 @@ input.level {
   margin-left: 1.73em;
 }
 
+.ptsMode {
+  font-size: x-small;
+  height: 2em;
+  width: 5.6em;
+  float: right;
+  margin: 0;
+  margin-top: 30.6em;
+  margin-right: 0.2em;
+  padding: 0;
+}
+
+.ptsMode.selected {
+  color: black;
+  background-color: white;
+}
+
+.ptsMode#left {
+  margin-right: 6em;
+}
+
 .bodyBtn {
   margin-top: 2em;
   width: 6em;
@@ -191,6 +211,7 @@ input.level {
   padding: 0.5em;
   margin: 0.5em 2em;
   margin-left: 2em;
+
 }
 
 .campaignPageCount {
@@ -203,8 +224,31 @@ input.level {
   cursor: pointer;
 }
 
+.campaignHeader {
+  margin: 0;
+}
+
+.campaignDesc {
+  display: inline-block;
+  margin: 0;
+  font-size: small;
+  width: 69%;
+}
+
+.campaignPlayers {
+  font-size: small;
+  float: right;
+}
+
 .discoverToggle {
   margin-left: 2em;
+}
+
+.joinCampaignBtn {
+  float: right;
+  display: inline;
+  margin-top: 1em;
+  margin-right: 0;
 }
 
 #home {
@@ -236,14 +280,18 @@ input.level {
   border-top-style: double;
 }
 
-#Loader {
-  text-align: center;
-  padding-top: 2em;
-}
-
 #body {
   margin-left: 8em;
   height: 92%;
+}
+
+#footer {
+  position: absolute;
+  font-size: small;
+  bottom: -6em;
+  width: 80%;
+  margin-left: 12em;
+  height: 3em;
 }
 
 #signup {

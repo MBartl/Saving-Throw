@@ -81,7 +81,8 @@ class Body extends Component {
                 setCharacters={this.props.setCharacters} />
             }} />
             <Route path='/new-character' render={(routerProps) => {
-              return <NewCharacterForm {...routerProps} />
+              return <NewCharacterForm {...routerProps}
+                setCharacters={this.props.setCharacters}/>
             }} />
             <Redirect from='/' to='/home' />
           </Switch>

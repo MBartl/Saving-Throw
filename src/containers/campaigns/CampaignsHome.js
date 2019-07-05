@@ -63,13 +63,14 @@ class CampaignsHome extends Component {
         :
         <Fragment>
           <Route path='/campaigns' render={(routerProps) => {
-            return <MainCampaign {...routerProps} />
+            return <MainCampaign nav={this.state.nav} {...routerProps} />
           }} />
           <Route path='/more-campaigns' render={(routerProps) => {
-            return <MoreCampaigns {...routerProps} getState={this.getState} />
+            return <MoreCampaigns nav={this.state.nav} getState={this.getState}
+              {...routerProps} />
           }} />
           <Route path='/new-campaign' render={(routerProps) => {
-            return <NewCampaignForm {...routerProps} getState={this.getState} />
+            return <NewCampaignForm getState={this.getState} {...routerProps} />
           }} />
         </Fragment>
         }

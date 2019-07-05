@@ -28,7 +28,7 @@ class MoreCampaigns extends Component {
   pageResults = () => {
     const discover = this.props.discover;
     const page = this.state.currentPage;
-    const results = discover.slice((page-1)*5, (page-1)*5+5);
+    const results = discover.slice((page-1)*4, (page-1)*4+4);
 
     return results;
   };
@@ -49,7 +49,7 @@ class MoreCampaigns extends Component {
         this.pageResults().length !== 0 && !this.props.loading ?
           <div>
             <span className='campaignPageCount' id='discoverPageCount'>
-              Page: {this.state.currentPage} of {Math.ceil(this.props.discover.length/5)}
+              Page: {this.state.currentPage} of {Math.ceil(this.props.discover.length/4)}
             </span>
             <h2>Discover Campaigns:</h2>
           </div>
@@ -58,7 +58,7 @@ class MoreCampaigns extends Component {
         }
         {
           this.pageResults().length !== 0 ?
-            this.pageResults().map((c, index) => <CampaignCard key={index} campaign={c} />)
+            this.pageResults().map((c, index) => <CampaignCard key={index} info={c} nav={this.props.nav} />)
           :
           null
         }
@@ -69,7 +69,7 @@ class MoreCampaigns extends Component {
                 disabled={this.state.currentPage === 1 ? true : false}
                 className='discoverToggle' onClick={() => this.pageInc(-1)}>◀◀Prev</button>
               <button
-                disabled={this.state.currentPage*5 >= this.props.discover.length ? true : false}
+                disabled={this.state.currentPage*4 >= this.props.discover.length ? true : false}
                 className='discoverToggle' onClick={() => this.pageInc(1)}>Next▶▶</button>
             </Fragment>
           :

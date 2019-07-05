@@ -7,6 +7,7 @@ import Header from './containers/Header';
 import Sidebar from './containers/Sidebar';
 import Loader from './Loader';
 import Body from './containers/Body';
+import Footer from './containers/Footer';
 
 import { url } from './route';
 import { connect } from 'react-redux';
@@ -107,6 +108,7 @@ class App extends Component {
             <Body setCharacters={this.setCharacters}
               setCampaigns={this.setCampaigns} />
         }
+        <Footer />
       </div>
     );
   };

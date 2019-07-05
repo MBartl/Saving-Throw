@@ -20,8 +20,13 @@ class NewCharacterForm extends Component {
     bonus: [0, 0, 2, null, 0, 1, 0],
     max: [15, 15, 17, null, 15, 16, 15],
     min: [8, 8, 10, null, 8, 9, 8],
-    points: 27
+    points: 27,
+    pointMode: 'Points'
   };
+
+  componentDidMount() {
+    this.props.setCharacters()
+  }
 
   // On form submit send character to backend
   handleSubmit = (e) => {
@@ -46,6 +51,8 @@ class NewCharacterForm extends Component {
     const ability_score = this.state.abilityScores.filter(score => score.value).map((score, index) => score.value).join(', ');
 
     const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}};
+
+    debugger
 
     fetch(url + 'characters', {
       method: 'POST',
@@ -227,116 +234,7 @@ class NewCharacterForm extends Component {
     return subBonuses[index][subrace];
   };
 
-  // Ability score functions
-  renderAbilityScore = (index) => {
-    return this.state.abilityScores[index] + this.state.bonus[index];
-  };
-
-  checkKeyPress = (e, ability) => {
-    if (e.charCode === 13) {
-      e.preventDefault()
-      this.handleAbilityScoreChange(e, ability)
-    }
-    else if (e.charCode > 47 && e.charCode < 58) (
-      this.handleAbilityScoreChange(e, ability)
-    );
-  };
-
-  handleAbilityScoreChange = (e, ability) => {
-    const index = this.state.abilityScores.findIndex(s => s.key === ability.key);
-    let newValue = parseInt(e.target.value);
-    const oldValue = this.state.abilityScores[index].value;
-
-    if (newValue > 999) {
-      alert("You can't go that high!");
-      return;
-    };
-
-    if (isNaN(newValue)) {
-      newValue = '';
-    };
-
-    this.changeScore(ability, index, newValue, oldValue);
-  };
-
-  changeScore(ability, index, newValue, oldValue) {
-    let ptChange;
-
-    if (newValue+1 === oldValue || newValue-1 === oldValue) {
-      if (newValue > oldValue) {newValue > 13 ? ptChange = -2 : ptChange = -1}
-      else {newValue > 12 ? ptChange = 2 : ptChange = 1};
-
-      if (this.state.points-ptChange < 0) {
-        alert('Not enough points');
-        return;
-      };
-
-      let scores = this.state.abilityScores;
-      scores.splice(index, 1, {key: ability.key, value: newValue});
-
-      this.setState({
-        abilityScores: [...scores],
-        points: this.state.points+ptChange
-      });
-    }
-
-    else {
-      ptChange = oldValue - newValue;
-
-      if (newValue > oldValue && newValue-13 > 0) {ptChange = ptChange-(newValue-13)}
-      else if (newValue < oldValue && oldValue-13 > 0) {ptChange = ptChange+oldValue-13};
-
-      let scores = this.state.abilityScores;
-      scores.splice(index, 1, {key: ability.key, value: newValue});
-
-      this.setState({
-        abilityScores: [...scores],
-        points: this.state.points+ptChange
-      });
-    };
-  };
-
-  applyBonuses = (index) => {
-    const bonus = this.combinedBonus(index);
-
-    const max = this.state.max.map((s, i) => s !== null ? 15+bonus[i] : null);
-    const min = this.state.min.map((s, i) => s !== null ? 8+bonus[i] : null);
-
-    const abilityScore = this.state.abilityScores.map((score, index) => {
-      return (
-        {key: score.key, value: score.value+bonus[index]-this.state.bonus[index]}
-      );
-    });
-
-    this.adjustPoints(max, abilityScore);
-
-    this.setState({
-      abilityScores: abilityScore,
-      bonus: bonus,
-      max: max,
-      min: min
-    });
-  };
-
-  adjustPoints(max, abilityScore) {
-    let pointAdj = 0;
-
-    const oldScores = this.state.abilityScores.map(ea => ea.value);
-    const newScores = abilityScore.map(s => s.value);
-    oldScores.forEach((s, i) => s > max[i] ? pointAdj = pointAdj+((s-max[i])) : null);
-
-    oldScores.forEach((s, i) => {
-      return (
-        newScores[i] > oldScores[i] && newScores[i] > 13 ?
-        pointAdj = pointAdj-(newScores[i]-oldScores[i]) : null
-      );
-    });
-
-    this.setState({
-      points: this.state.points+pointAdj
-    });
-  };
-
+  // Combine race and subrace bonuses
   combinedBonus = (index) => {
     let raceBonus = this.getRaceBonuses(this.state.raceIndex);
     let subraceBonus;
@@ -363,6 +261,124 @@ class NewCharacterForm extends Component {
     };
   };
 
+  applyBonuses = (index) => {
+    const bonus = this.combinedBonus(index);
+
+    const max = this.state.max.map((s, i) => s !== null ? 15+bonus[i] : null);
+    const min = this.state.min.map((s, i) => s !== null ? 8+bonus[i] : null);
+
+    const abilityScore = this.state.abilityScores.map((score, index) => {
+      return (
+        {key: score.key, value: score.value+bonus[index]-this.state.bonus[index]}
+      );
+    });
+
+    this.adjustPoints(max, abilityScore);
+
+    this.setState({
+      abilityScores: abilityScore,
+      bonus: bonus,
+      max: max,
+      min: min
+    });
+  };
+
+  // Ability score functions
+  renderAbilityScore = (index) => {
+    return this.state.abilityScores[index] + this.state.bonus[index];
+  };
+
+  handleAbilityScoreChange = (e, ability) => {
+    const index = this.state.abilityScores.findIndex(s => s.key === ability.key);
+    let newValue = parseInt(e.target.value);
+    const oldValue = this.state.abilityScores[index].value;
+
+    if (newValue > 999) {
+      alert("You can't go that high!");
+      return;
+    };
+
+    if (isNaN(newValue) || e.target.value === '') {
+      newValue = '';
+    };
+
+    this.changeScore(ability, index, newValue, oldValue);
+  };
+
+  changeScore(ability, index, newValue, oldValue) {
+    let ptChange;
+
+    if (newValue+1 === oldValue || newValue-1 === oldValue) {
+      if (newValue > oldValue) {newValue > 13 ? ptChange = -2 : ptChange = -1}
+      else {newValue > 12 ? ptChange = 2 : ptChange = 1};
+
+      if (this.state.pointMode === 'Points' && this.state.points+ptChange < 0) {
+        alert('Not enough points');
+        return;
+      };
+
+      let scores = this.state.abilityScores;
+      scores.splice(index, 1, {key: ability.key, value: newValue});
+
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+ptChange
+      });
+    }
+
+    else {
+      ptChange = oldValue - newValue;
+
+      if (newValue > oldValue && newValue-13 > 0) {ptChange = ptChange-(newValue-13)}
+      else if (newValue < oldValue && oldValue-13 > 0) {ptChange = ptChange+oldValue-13};
+
+      if (this.state.pointMode === 'Points' && this.state.points+ptChange < 0) {
+        alert('Not enough points');
+        return;
+      };
+
+      let scores = this.state.abilityScores;
+      scores.splice(index, 1, {key: ability.key, value: newValue});
+
+      this.setState({
+        abilityScores: [...scores],
+        points: this.state.points+ptChange
+      });
+    };
+  };
+
+  // Adjust point buy points when changing race or subrace
+  adjustPoints(max, abilityScore) {
+    let pointAdj = 0;
+
+    const oldScores = this.state.abilityScores.map(ea => ea.value);
+    const newScores = abilityScore.map(s => s.value);
+    oldScores.forEach((s, i) => s > max[i] ? pointAdj = pointAdj+((s-max[i])) : null);
+
+    oldScores.forEach((s, i) => {
+      return (
+        newScores[i] > oldScores[i] && newScores[i] > 13 ?
+        pointAdj = pointAdj-(newScores[i]-oldScores[i]) : null
+      );
+    });
+
+    debugger
+    this.setState({
+      points: this.state.points+pointAdj
+    });
+  };
+
+  // Allow number input only
+  checkKeyPress = (e, ability) => {
+    if (e.charCode === 13) {
+      e.preventDefault()
+    }
+    else if (e.charCode > 47 && e.charCode < 58) (
+      this.handleAbilityScoreChange(e, ability)
+    );
+  };
+
+  // Handle character levels 1-20
   handleLevel = (e) => {
     if (e.target.value > 20) {
       alert('Max is 20');
@@ -373,6 +389,66 @@ class NewCharacterForm extends Component {
       lvl: e.target.value
     });
   };
+
+  // Handle stat point modes
+  pointMode = (e) => {
+    e.preventDefault();
+
+    if (e.target.innerHTML === 'Random') {
+      this.randomizeScore();
+    };
+
+    this.setState({
+      pointMode: e.target.innerHTML
+    });
+  };
+
+  randomizeScore = () => {
+    let points = 27;
+    const bonus = this.combinedBonus()
+    let newPoints = [8, 8, 8, null, 8, 8, 8].map((s, i) => i !== 3 ? s+bonus[i] : null);
+
+    // Simulate point buy
+    while (points > 0) {
+      let stat = Math.floor(Math.random()*6);
+      if (stat > 2) {stat++};
+      if (newPoints[stat] > 13 && points === 1) {
+        stat === 0 ? stat++ : stat--
+        if (stat === 2) (stat--)
+      }
+      // Prevent random stats from exceeding maximum
+      if (newPoints[stat]+1 > this.state.max[stat]) {
+        stat = this.rerollStat(stat)
+      };
+      // Give preference to maxing stats
+      if (newPoints[stat] === 8 && Math.floor(Math.random()*2) === 0) {
+        stat = this.rerollStat(stat)
+      };
+
+      newPoints[stat]++;
+      // Adjust points
+
+      points--;
+      if (newPoints[stat] > 13) {points--};
+    };
+
+    // Set the state
+    this.setState({
+      abilityScores: newPoints.map((s, i) => {
+        return ({key: this.state.abilityScores[i].key, value: newPoints[i]});
+      }),
+      points: 0
+    });
+  }
+
+  rerollStat = (stat) => {
+    const oldStat = stat
+    while (oldStat === stat) {
+      stat = Math.floor(Math.random()*6);
+    }
+    if (stat > 2) (stat++)
+    return stat
+  }
 
   render() {
     const stats = ['STR+', 'DEX+', 'CON+', null, 'INT+', 'WIS+', 'CHA+'];
@@ -507,8 +583,15 @@ class NewCharacterForm extends Component {
             }
           </div>
           <br /><br />
-          <h5 id='ptsRemain'>
-            Points Remaining: {this.state.points}</h5>
+          {
+            this.state.pointMode === 'Points' ?
+              <h5 id='ptsRemain'>Points Remaining: {this.state.points}</h5>
+            :
+            null
+          }
+          <button onClick={this.pointMode} className={this.state.pointMode === 'Manual' ? 'ptsMode selected' : 'ptsMode'} id='left'>Manual</button>
+          <button onClick={this.pointMode} className={this.state.pointMode === 'Random' ? 'ptsMode selected' : 'ptsMode'}>Random</button>
+          <button onClick={this.pointMode} className={this.state.pointMode === 'Points' ? 'ptsMode selected' : 'ptsMode'}>Points</button>
           <button value='submit' id='characterSubmit' onClick={this.handleSubmit}>Next</button>
         </form>
       </Fragment>
