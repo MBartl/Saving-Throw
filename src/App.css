@@ -226,6 +226,7 @@ input.level {
 
 .campaignHeader {
   margin: 0;
+  display: inline;
 }
 
 .campaignDesc {
@@ -244,11 +245,30 @@ input.level {
   margin-left: 2em;
 }
 
-.joinCampaignBtn {
+.offerToDM, .joinCampaignBtn {
   float: right;
   display: inline;
-  margin-top: 1em;
   margin-right: 0;
+  height: 1.8em;
+  width: 6em;
+  padding: 0;
+}
+
+.offerToDM {
+  margin-top: -0.2em;
+}
+
+.joinCampaignBtn {
+  margin-top: -1.6em;
+}
+
+.dmAlert {
+  float: right;
+  padding-right: 11em;
+  color: red;
+  font-size: small;
+  font-style: italic;
+  vertical-align: super;
 }
 
 #home {
@@ -286,7 +306,7 @@ input.level {
 }
 
 #footer {
-  position: absolute;
+  position: fixed;
   font-size: small;
   bottom: -6em;
   width: 80%;
