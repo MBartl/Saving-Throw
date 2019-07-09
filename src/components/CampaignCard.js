@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 
 class CampaignCard extends Component {
 
@@ -7,32 +10,36 @@ class CampaignCard extends Component {
     const campaign = this.props.info.campaign
     const characters = this.props.info.characters
     return (
-      <div className='campaignCard'>
-        <span className='campaignPlayers'>
-          {characters.length}/{campaign.max_players} characters
-        </span>
-        <h3 className='campaignHeader'>{campaign.name}</h3>
-        <span className='dmAlert'>{this.props.info.dmNeeded ? 'DM Needed!' : null}</span>
-        <p className='campaignDesc'>"{campaign.description.slice(0, 190)}
-          {campaign.description.length > 190 ? '...' : null}"</p>
-        {
-          this.props.nav === 'More' ?
-            <Fragment>
-              { this.props.info.dmNeeded ?
-                <button className='offerToDM'>DM</button>
-              :
-                null
-              }
-              <br />
-              <button className='joinCampaignBtn'>Join</button>
-            </Fragment>
+      <Link to={this.props.nav === 'Home' ? `campaigns/${campaign.id}` : `more-campaigns/${campaign.id}`}>
+        <div className='campaignCard'>
+          <span className='campaignPlayers'>
+            {characters.length}/{campaign.max_players} characters
+          </span>
+          <span className='dmAlert'>{this.props.info.dmNeeded ? 'DM Needed!' : null}</span>
+          <h3 className='campaignCardHeader'>{campaign.name}</h3><br />
+          <p className='campaignDesc'>"{campaign.description.slice(0, 190)}
+            {campaign.description.length > 220 ? '...' : null}"</p>
+          {
+            this.props.nav === 'More' ?
+              <Fragment>
+                <button className='campaignInfoBtn'>Info</button>
+              </Fragment>
 
-          : null
-        }
-      </div>
+            : null
+          }
+        </div>
+      </Link>
     );
   };
 
 };
 
-export default CampaignCard;
+const mapStateToProps = state => {
+  return {
+    nav: state.campaign.nav
+  };
+};
+
+export default connect(
+  mapStateToProps
+)(CampaignCard);

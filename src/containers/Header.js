@@ -10,6 +10,7 @@ class Header extends Component {
     this.props.logOut(this.props.user);
     this.props.resetCampaigns();
     this.props.resetCharacters();
+    this.props.resetLoadings();
     localStorage.removeItem('token');
   };
 
@@ -19,9 +20,6 @@ class Header extends Component {
         {
           this.props.user.currentUser === null ?
             <Fragment>
-              <Link to='/home'>
-                <button id='home' className='actBtn'>Home</button>
-              </Link>
               <h1 id='title'>Saving Throw</h1>
               <Link className='actBtn R' to='/signup'>
                 <button className='actBtn R' id='signup'>
@@ -36,14 +34,13 @@ class Header extends Component {
             </Fragment>
           :
           <Fragment>
-            <Link to='/home'>
-              <button id='home' className='actBtn'>Home</button>
-            </Link>
             <h1 id='title'>Saving Throw</h1>
             <Link to='/home'>
               <button onClick={this.logOut} className='actBtn R'>Log Out</button>
             </Link>
-            <button className='actBtn R'>Settings</button>
+            <Link to='/home'>
+              <button id='home' className='actBtn R'>Home</button>
+            </Link>
           </Fragment>
         }
       </div>
@@ -69,6 +66,9 @@ const mapDispatchToProps = dispatch => {
     },
     resetCharacters: () => {
       dispatch({type: 'RESET_CHARACTERS'})
+    },
+    resetLoadings: () => {
+      dispatch({type: 'RESET_LOADINGS'})
     }
   };
 };

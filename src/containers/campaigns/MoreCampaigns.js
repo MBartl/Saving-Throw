@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
 import CampaignCard from '../../components/CampaignCard';
+import CampaignButtons from '../../components/CampaignButtons';
 import Loader from '../../Loader';
 
-import { url } from '../../route';
 import { connect } from 'react-redux';
 
 
@@ -14,15 +14,7 @@ class MoreCampaigns extends Component {
   };
 
   componentDidMount() {
-    this.props.getState("More");
-    const token = localStorage.getItem('token');
-
-    fetch(url + 'discover-campaigns', {
-      headers: {'Authorization': token}
-    })
-    .then(res => res.json())
-    .then(doc => this.props.discoverCampaigns(doc.campaigns))
-    .then(() => this.props.discoverLoad());
+    this.props.setNav();
   };
 
   pageResults = () => {
@@ -42,16 +34,18 @@ class MoreCampaigns extends Component {
 
   render() {
     return (
-      <div>
+      <div id='discoverCampaigns'>
+        <CampaignButtons />
+        <br />
         { this.props.loading ?
           <Loader />
         :
         this.pageResults().length !== 0 && !this.props.loading ?
           <div>
+            <h2 className='discoverHeader'>Discover Campaigns:</h2>
             <span className='campaignPageCount' id='discoverPageCount'>
               Page: {this.state.currentPage} of {Math.ceil(this.props.discover.length/4)}
             </span>
-            <h2>Discover Campaigns:</h2>
           </div>
         :
           null
@@ -93,11 +87,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    discoverLoad: () => {
-      dispatch({ type: 'DISCOVER_LOADING' })
-    },
-    discoverCampaigns: (campaigns) => {
-      dispatch({ type: 'SET_DISCOVER', payload: campaigns })
+    setNav: () => {
+      dispatch({ type: 'CHANGE_NAV', payload: 'More' })
     }
   };
 };

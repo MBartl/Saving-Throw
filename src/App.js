@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 import './Loader.css';
+import './SideLoader.css';
 
 import Header from './containers/Header';
 import Sidebar from './containers/Sidebar';
@@ -48,16 +49,17 @@ class App extends Component {
       .then(res => res.json())
       .then(doc => {
         if (doc.errors) {
-          alert(doc.errors)
+          alert(doc.errors);
         } else
         if (doc.characters) {
-          this.props.setCharacters(doc.characters)
+          this.props.setCharacters(doc.characters);
+          this.props.setFreeCharacters(doc.characters.filter(c => c.campaign_characters.length === 0));
         };
       })
       .then(() => {
         this.setCampaigns();
         this.props.characterLoad();
-      })
+      });
     }
     else {
       this.props.setCharacters(this.props.characters)
@@ -137,6 +139,9 @@ const mapDispatchToProps = dispatch => {
     },
     setCharacters: (characters) => {
       dispatch({ type: 'SET_CHARACTERS', payload: characters })
+    },
+    setFreeCharacters: (characters) => {
+      dispatch({ type: 'SET_FREE_CHARACTERS', payload: characters })
     },
     campaignLoad: () => {
       dispatch({ type: 'CAMPAIGN_LOADING' })

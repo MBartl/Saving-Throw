@@ -16,6 +16,8 @@ export default function loadingReducer(
       return {...state, characterLoading: false};
     case 'DISCOVER_LOADING':
       return {...state, discoverLoad: false}
+    case 'RESET_LOADINGS':
+      return {...state, loading: true, characterLoading: true, campaignLoading: true, discoverLoad: true}
     default:
       return state;
   };

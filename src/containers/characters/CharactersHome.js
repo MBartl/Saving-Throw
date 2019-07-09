@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
+import CharacterCard from '../../components/CharacterCard';
 import Loader from '../../Loader';
 
 import { Link } from 'react-router-dom';
@@ -24,12 +25,14 @@ class CharactersHome extends Component {
           :
           this.props.characters.length !== 0 ?
             <Fragment>
-              <h2>Your Characters:</h2>
-              <ul>
-                {this.props.characters.map((character, index) => {
-                  return <li key={index}>{character.name}</li>
+              <div id='charHeader'>
+                <h2>Your Characters:</h2>
+              </div>
+              <div id='charCardContainer'>
+                {this.props.characters.map((c, index) => {
+                  return <CharacterCard key={index} character={c} />
                 })}
-              </ul>
+              </div>
             </Fragment>
           :
           null

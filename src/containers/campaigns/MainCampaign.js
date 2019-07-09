@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 import CampaignCard from '../../components/CampaignCard';
+import CampaignButtons from '../../components/CampaignButtons';
 
 import { connect } from 'react-redux';
 
@@ -33,19 +34,16 @@ class MainCampaign extends Component {
 
   render() {
     return (
-      <Fragment>
-        {
-          this.props.campaigns || this.props.characterCampaigns ?
-            <span className='campaignPageCount'>
-              Page: {this.state.currentPage} of {Math.ceil(this.combinedCampaigns().length/4)}
-            </span>
-          :
-          null
-        }
+      <div id='mainCampaign'>
+        <CampaignButtons />
+        <br />
         {
           this.pageResults().campaigns.length !== 0 ?
             <Fragment>
-              <h2>Campaigns you DM:</h2>
+              <h2 className='campaignHeader'>Campaigns you DM:</h2>
+              <span className='campaignPageCount'>
+                Page: {this.state.currentPage} of {Math.ceil(this.combinedCampaigns().length/4)}
+              </span>
               {this.pageResults().campaigns.map((campaign, index) => {
                 return <CampaignCard key={index} info={campaign} nav={this.props.nav} />
               })}
@@ -58,12 +56,23 @@ class MainCampaign extends Component {
             null
           :
           this.pageResults().characterCampaigns.length !== 0 ?
-            <Fragment>
-              <h2>Your Character's Campaigns:</h2>
-              {this.pageResults().characterCampaigns.map((campaign, index) => {
-                return <CampaignCard key={index} info={campaign} nav={this.props.nav} />
-              })}
-            </Fragment>
+            <h2 className='campaignHeader'>Your Character's Campaigns:</h2>
+          :
+          null
+        }
+        {
+          this.pageResults().campaigns.length === 0 && this.pageResults().characterCampaigns.length !== 0 ?
+            <span className='campaignPageCount'>
+              Page: {this.state.currentPage} of {Math.ceil(this.combinedCampaigns().length/4)}
+            </span>
+          :
+            null
+        }
+        {
+          this.pageResults().characterCampaigns.length !== 0 ?
+            this.pageResults().characterCampaigns.map((campaign, index) => {
+              return <CampaignCard key={index} info={campaign} nav={this.props.nav} />
+            })
           :
           null
         }
@@ -86,7 +95,7 @@ class MainCampaign extends Component {
           :
           null
         }
-      </Fragment>
+      </div>
     );
   };
 

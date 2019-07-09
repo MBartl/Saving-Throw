@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from 'react';
 
-import { Link } from 'react-router-dom';
-import { url } from '../route';
+import CampaignButtons from '../../components/CampaignButtons';
+
+import { url } from '../../route';
 import { connect } from 'react-redux';
 
 
 class newCampaignForm extends Component {
 
   componentDidMount() {
-    this.props.getState("New")
+    this.props.setNav()
   };
 
   handleSubmit = (e) => {
@@ -44,9 +45,7 @@ class newCampaignForm extends Component {
   render() {
     return (
       <Fragment>
-        <Link to='campaigns'>
-          <button onClick={() => this.props.getState("Home")} className='bodyBtn' id='campaignBack'>Back</button>
-        </Link>
+        <CampaignButtons />
         <form id='campaignForm' onSubmit={this.handleSubmit}>
           <label value='name'>Name</label>
           <input name='name' />
@@ -64,6 +63,9 @@ class newCampaignForm extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setNav: () => {
+      dispatch({ type: 'CHANGE_NAV', payload: 'New' })
+    },
     addCampaign: (campaign) => {
       dispatch({ type: 'ADD_CAMPAIGN', payload: campaign })
     }

@@ -33,6 +33,7 @@ class NewCharacterForm extends Component {
     e.preventDefault();
 
     const token = localStorage.getItem('token');
+    
     const currentRace = this.displayRace(this.state.raceIndex);
     const subraceText = this.displaySubrace(this.state.subraceIndex);
     let currentSubrace;
@@ -51,8 +52,6 @@ class NewCharacterForm extends Component {
     const ability_score = this.state.abilityScores.filter(score => score.value).map((score, index) => score.value).join(', ');
 
     const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}};
-
-    debugger
 
     fetch(url + 'characters', {
       method: 'POST',

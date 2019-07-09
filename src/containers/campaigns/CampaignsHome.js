@@ -2,75 +2,61 @@ import React, { Component, Fragment } from 'react';
 
 import MainCampaign from './MainCampaign';
 import MoreCampaigns from './MoreCampaigns';
-
-import NewCampaignForm from '../../components/NewCampaignForm';
+import CampaignShow from './CampaignShow';
+import NewCampaignForm from './NewCampaignForm';
 
 import Loader from '../../Loader';
 
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { url } from '../../route';
 import { connect } from 'react-redux';
 
 
 class CampaignsHome extends Component {
 
-  state = {
-    nav: 'Home'
-  };
-
   componentDidMount(){
     this.props.setCampaigns();
-  };
 
-  getState = (event) => {
-    let state;
+    this.props.match.url.split('-')[0] === '/campaigns' ?
+      this.props.setNav('Home')
+      :
+      this.props.match.url.split('-')[0] === '/more' ?
+        this.props.setNav('More')
+        :
+        this.props.setNav('New')
 
-    if (event.target) {
-      state = event.target.innerText
-      this.changeState(state)
-    }
-    else {
-      this.changeState(event)
-    };
-  };
+    const token = localStorage.getItem('token');
 
-  changeState = (state) => {
-    this.setState({
-      nav: state
-    });
+    fetch(url + 'discover-campaigns', {
+      headers: {'Authorization': token}
+    })
+    .then(res => res.json())
+    .then(doc => this.props.discoverCampaigns(doc.campaigns))
+    .then(() => this.props.discoverLoad());
   };
 
   render() {
     return (
-      <div>
-        <Link to='/campaigns'>
-          <button id='campaignHome' onClick={event => this.getState(event)}
-            className={this.state.nav === 'Home' ? 'bodyBtn selected' :
-            'bodyBtn'}>Home</button>
-        </Link>
-        <Link to='/more-campaigns'>
-          <button onClick={event => this.getState(event)}
-            className={this.state.nav === 'More' ? 'bodyBtn selected' :
-            'bodyBtn'}>More</button>
-        </Link>
-        <Link to='/new-campaign'>
-          <button onClick={event => this.getState(event)}
-            className={this.state.nav === 'New' ? 'bodyBtn selected' :
-            'bodyBtn'}>New</button>
-        </Link>
+      <div id='campaignsHome'>
         { this.props.loadState ?
           <Loader />
 
         :
         <Fragment>
-          <Route path='/campaigns' render={(routerProps) => {
-            return <MainCampaign nav={this.state.nav} {...routerProps} />
+          <Route exact path='/campaigns' render={(routerProps) => {
+            return <MainCampaign {...routerProps} />
           }} />
-          <Route path='/more-campaigns' render={(routerProps) => {
-            return <MoreCampaigns nav={this.state.nav} getState={this.getState}
-              {...routerProps} />
+          <Route path='/campaigns/:id' render={(routerProps) => {
+            return <CampaignShow {...routerProps} />
+          }} />
+          <Route exact path='/more-campaigns' render={(routerProps) => {
+            return <MoreCampaigns {...routerProps} />
+          }} />
+          <Route path='/more-campaigns/:id' render={(routerProps) => {
+            return <CampaignShow {...routerProps} />
           }} />
           <Route path='/new-campaign' render={(routerProps) => {
-            return <NewCampaignForm getState={this.getState} {...routerProps} />
+            return <NewCampaignForm {...routerProps} />
           }} />
         </Fragment>
         }
@@ -83,11 +69,27 @@ class CampaignsHome extends Component {
 const mapStateToProps = state => {
   return {
     loadState: state.load.campaignLoading,
-    campaigns: state.campaign.campaigns,
+    // campaigns: state.campaign.campaigns,
+    // discover: state.campaign.discover,
     characterCampaigns: state.campaign.characterCampaigns
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    setNav: (keyword) => {
+      dispatch({ type: 'CHANGE_NAV', payload: keyword })
+    },
+    discoverLoad: () => {
+      dispatch({ type: 'DISCOVER_LOADING' })
+    },
+    discoverCampaigns: (campaigns) => {
+      dispatch({ type: 'SET_DISCOVER', payload: campaigns })
+    }
+  };
+};
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(CampaignsHome);

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import Loader from '../Loader';
+import SideLoader from '../SideLoader';
 
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,13 +9,14 @@ import { connect } from 'react-redux';
 class Sidebar extends Component {
 
   render() {
-    const loading = this.props.charLoadState || this.props.campLoadState
+    const loadState = this.props.charLoadState || this.props.campLoadState
+    const loading = this.props.user && loadState
     return (
       <div id='sidebar'>
         { loading ?
-          <Loader id='loader' />
+          <SideLoader />
         :
-          null
+            null
         }
         { this.props.user ?
           <Fragment>

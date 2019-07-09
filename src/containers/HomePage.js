@@ -8,7 +8,9 @@ import { connect } from 'react-redux';
 class HomePage extends Component {
 
   componentDidMount() {
-    this.props.setCharacters();
+    if (this.props.user !== null) {
+      this.props.setCharacters();      
+    }
   };
 
   render() {
@@ -18,9 +20,9 @@ class HomePage extends Component {
           this.props.loadState ?
             <Loader />
           :
-          this.props.user.currentUser ?
+          this.props.user ?
 
-            <h1>Welcome {this.props.user.currentUser.name}</h1>
+            <h1>Welcome {this.props.user.name}</h1>
 
           : <h1>This is the logged out homepage</h1>
         }
@@ -32,7 +34,7 @@ class HomePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user.currentUser
   };
 };
 

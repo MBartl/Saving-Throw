@@ -6,17 +6,19 @@ class Footer extends Component {
     return (
       <div id='footer'>
         <span style={{float: 'left'}}>
-          Character portraits by
-          <a href='http://team-preston.com' target='_blank'>Jeff Preston</a>
+          Character portraits by <a className='footerLink' href='http://team-preston.com' target='_blank' rel='noopener noreferrer'>
+          Jeff Preston</a>
           <br/>
-          via <a href='http://kck.st/dogX5W' target='_blank'>Terrible Character Portraits</a>
+          via <a className='footerLink' href='http://kck.st/dogX5W' target='_blank' rel='noopener noreferrer'>
+          Terrible Character Portraits</a>
         </span>
         <span style={{float: 'right'}}>
-          <a href='https://github.com/MBartl/Saving-Throw' target='_blank'>Open source</a> project by <a href='https://github.com/MBartl' target='_blank'>Matt Bartl</a>
+          <a className='footerLink' href='https://github.com/MBartl/Saving-Throw' target='_blank'
+          rel='noopener noreferrer'>Open source</a> project by <a className='footerLink' href='https://github.com/MBartl' target='_blank' rel='noopener noreferrer'> Matt Bartl</a>
         </span>
         <br />
         <span style={{float: 'right'}}>
-          Made with <span role='img' aria-label='love'>❤️</span>at <span style={{color: 'lightblue'}}><span style={{display: 'none'}}>'</span>//<span style={{display: 'none'}}>'</span></span> Flatiron School
+          Made with <span role='img' aria-label='love'>❤️</span>at Flatiron School
         </span>
       </div>
     );
