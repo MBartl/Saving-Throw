@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { URL, LOADING, LOG_IN, CHARACTER_LOADING, SET_CHARACTERS, SET_FREE_CHARACTERS, CAMPAIGN_LOADING, SET_CAMPAIGNS, SET_CHARACTER_CAMPAIGNS } from './constants'
+
 import './App.css';
 import './Loader.css';
 import './SideLoader.css';
@@ -10,7 +12,6 @@ import Loader from './Loader';
 import Body from './containers/Body';
 import Footer from './containers/Footer';
 
-import { url } from './route';
 import { connect } from 'react-redux';
 
 
@@ -21,7 +22,7 @@ class App extends Component {
     const token = localStorage.getItem('token');
 
     if (token !== null) {
-      fetch(url + 'auto_login', {
+      fetch(URL + 'auto_login', {
         headers: {'Authorization': token}
       })
       .then(res => res.json())
@@ -43,7 +44,7 @@ class App extends Component {
     const token = localStorage.getItem('token');
 
     if (this.props.characters.length === 0) {
-      fetch(url + 'characters', {
+      fetch(URL + 'characters', {
         headers: {'Authorization': token}
       })
       .then(res => res.json())
@@ -72,7 +73,7 @@ class App extends Component {
     if (this.props.campaigns.length === 0 &&
       this.props.characterCampaigns.length === 0) {
 
-      fetch(url + 'campaigns', {
+      fetch(URL + 'campaigns', {
         headers: {'Authorization': token}
       })
       .then(res => res.json())
@@ -129,28 +130,28 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loading: () => {
-      dispatch({type: 'LOADING'})
+      dispatch({type: LOADING})
     },
     autoLogin: (user) => {
-      dispatch({type: 'LOG_IN', payload: user})
+      dispatch({type: LOG_IN, payload: user})
     },
     characterLoad: () => {
-      dispatch({ type: 'CHARACTER_LOADING' })
+      dispatch({ type: CHARACTER_LOADING })
     },
     setCharacters: (characters) => {
-      dispatch({ type: 'SET_CHARACTERS', payload: characters })
+      dispatch({ type: SET_CHARACTERS, payload: characters })
     },
     setFreeCharacters: (characters) => {
-      dispatch({ type: 'SET_FREE_CHARACTERS', payload: characters })
+      dispatch({ type: SET_FREE_CHARACTERS, payload: characters })
     },
     campaignLoad: () => {
-      dispatch({ type: 'CAMPAIGN_LOADING' })
+      dispatch({ type: CAMPAIGN_LOADING })
     },
     setCampaign: (campaigns) => {
-      dispatch({ type: 'SET_CAMPAIGNS', payload: campaigns })
+      dispatch({ type: SET_CAMPAIGNS, payload: campaigns })
     },
     setCharacterCampaigns: (characterCampaigns) => {
-      dispatch({ type: 'SET_CHARACTER_CAMPAIGNS', payload: characterCampaigns })
+      dispatch({ type: SET_CHARACTER_CAMPAIGNS, payload: characterCampaigns })
     }
   };
 };

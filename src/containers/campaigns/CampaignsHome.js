@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { URL, CHANGE_NAV, DISCOVER_LOADING, SET_DISCOVER } from '../../constants'
+
 import MainCampaign from './MainCampaign';
 import MoreCampaigns from './MoreCampaigns';
 import CampaignShow from './CampaignShow';
@@ -8,7 +10,6 @@ import NewCampaignForm from './NewCampaignForm';
 import Loader from '../../Loader';
 
 import { Route } from 'react-router-dom';
-import { url } from '../../route';
 import { connect } from 'react-redux';
 
 
@@ -27,7 +28,7 @@ class CampaignsHome extends Component {
 
     const token = localStorage.getItem('token');
 
-    fetch(url + 'discover-campaigns', {
+    fetch(URL + 'discover-campaigns', {
       headers: {'Authorization': token}
     })
     .then(res => res.json())
@@ -78,13 +79,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setNav: (keyword) => {
-      dispatch({ type: 'CHANGE_NAV', payload: keyword })
+      dispatch({ type: CHANGE_NAV, payload: keyword })
     },
     discoverLoad: () => {
-      dispatch({ type: 'DISCOVER_LOADING' })
+      dispatch({ type: DISCOVER_LOADING })
     },
     discoverCampaigns: (campaigns) => {
-      dispatch({ type: 'SET_DISCOVER', payload: campaigns })
+      dispatch({ type: SET_DISCOVER, payload: campaigns })
     }
   };
 };

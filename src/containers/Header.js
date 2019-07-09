@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { LOG_OUT, RESET_CAMPAIGNS, RESET_CHARACTERS, RESET_LOADINGS } from '../constants'
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -59,16 +61,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logOut: (token) => {
-      dispatch({type: 'LOG_OUT', payload: token})
+      dispatch({type: LOG_OUT, payload: token})
     },
     resetCampaigns: () => {
-      dispatch({type: 'RESET_CAMPAIGNS'})
+      dispatch({type: RESET_CAMPAIGNS})
     },
     resetCharacters: () => {
-      dispatch({type: 'RESET_CHARACTERS'})
+      dispatch({type: RESET_CHARACTERS})
     },
     resetLoadings: () => {
-      dispatch({type: 'RESET_LOADINGS'})
+      dispatch({type: RESET_LOADINGS})
     }
   };
 };

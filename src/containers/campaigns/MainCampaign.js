@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { CAMPAIGN_LOADING, SET_CAMPAIGNS, SET_CHARACTER_CAMPAIGNS } from '../../constants'
+
 import CampaignCard from '../../components/CampaignCard';
 import CampaignButtons from '../../components/CampaignButtons';
 
@@ -112,13 +114,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     campaignLoad: () => {
-      dispatch({ type: 'CAMPAIGN_LOADING' })
+      dispatch({ type: CAMPAIGN_LOADING })
     },
     setCampaign: (campaigns) => {
-      dispatch({ type: 'SET_CAMPAIGNS', payload: campaigns })
+      dispatch({ type: SET_CAMPAIGNS, payload: campaigns })
     },
     setCharacterCampaigns: (characterCampaigns) => {
-      dispatch({ type: 'SET_CHARACTER_CAMPAIGNS', payload: characterCampaigns })
+      dispatch({ type: SET_CHARACTER_CAMPAIGNS, payload: characterCampaigns })
     }
   };
 };

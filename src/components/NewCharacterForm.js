@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
+import { URL, HEADERS, ADD_CHARACTER } from '../constants'
+
 import { Link } from 'react-router-dom';
-import { url } from '../route';
 import { connect } from 'react-redux';
 
 
@@ -33,7 +34,7 @@ class NewCharacterForm extends Component {
     e.preventDefault();
 
     const token = localStorage.getItem('token');
-    
+
     const currentRace = this.displayRace(this.state.raceIndex);
     const subraceText = this.displaySubrace(this.state.subraceIndex);
     let currentSubrace;
@@ -53,12 +54,11 @@ class NewCharacterForm extends Component {
 
     const character = {character: {name, biography, level, player_class, race, subclass, subrace, ability_score}};
 
-    fetch(url + 'characters', {
+    fetch(URL + 'characters', {
       method: 'POST',
       headers: {
         'Authorization': token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        HEADERS
       },
       body: JSON.stringify(character)
     })
@@ -602,7 +602,7 @@ class NewCharacterForm extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     addCharacter: (character) => {
-      dispatch({ type: 'ADD_CHARACTER', payload: character })
+      dispatch({ type: ADD_CHARACTER, payload: character })
     }
   };
 };

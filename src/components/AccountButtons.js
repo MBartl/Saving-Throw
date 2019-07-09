@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { LOG_OUT } from '../constants'
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -55,7 +57,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logOut: (token) => {
-      dispatch({type: 'LOG_OUT', payload: token})
+      dispatch({type: LOG_OUT, payload: token})
     }
   };
 };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountButtons);

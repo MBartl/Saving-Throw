@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
+import { URL, HEADERS, CHANGE_NAV, ADD_CAMPAIGN } from '../../constants'
+
 import CampaignButtons from '../../components/CampaignButtons';
 
-import { url } from '../../route';
 import { connect } from 'react-redux';
 
 
@@ -22,12 +23,10 @@ class newCampaignForm extends Component {
     let max_players = e.target.max_players.value;
     let campaign = {campaign: {name, description, max_players}};
 
-    fetch(url + 'campaigns', {
+    fetch(URL + 'campaigns', {
       method: 'POST',
-      headers: {
-        'Authorization': token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+      headers: {...HEADERS,
+        'Authorization': token
       },
       body: JSON.stringify(campaign)
     })
@@ -64,10 +63,10 @@ class newCampaignForm extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setNav: () => {
-      dispatch({ type: 'CHANGE_NAV', payload: 'New' })
+      dispatch({ type: CHANGE_NAV, payload: 'New' })
     },
     addCampaign: (campaign) => {
-      dispatch({ type: 'ADD_CAMPAIGN', payload: campaign })
+      dispatch({ type: ADD_CAMPAIGN, payload: campaign })
     }
   };
 };

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { CHANGE_NAV } from '../../constants'
+
 import CampaignCard from '../../components/CampaignCard';
 import CampaignButtons from '../../components/CampaignButtons';
 import Loader from '../../Loader';
@@ -88,7 +90,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setNav: () => {
-      dispatch({ type: 'CHANGE_NAV', payload: 'More' })
+      dispatch({ type: CHANGE_NAV, payload: 'More' })
     }
   };
 };

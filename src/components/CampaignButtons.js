@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { CHANGE_NAV } from '../constants'
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -44,7 +46,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setNav: (nav) => {
-      dispatch({ type: 'CHANGE_NAV', payload: nav })
+      dispatch({ type: CHANGE_NAV, payload: nav })
     }
   };
 };

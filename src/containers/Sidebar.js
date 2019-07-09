@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import { CHANGE_NAV } from '../constants'
+
 import SideLoader from '../SideLoader';
 
 import { Link } from 'react-router-dom';
@@ -25,8 +27,7 @@ class Sidebar extends Component {
                 className={loading ? 'addSideBtn' : 'sideBtn'}>Characters</button>
             </Link>
             <Link to='/campaigns'>
-              <button  disabled={this.props.campLoadState}
-              className='addSideBtn'>Campaigns</button>
+              <button  disabled={this.props.campLoadState} onClick={() => this.props.setNav('Home')} className='addSideBtn'>Campaigns</button>
             </Link>
           </Fragment>
         :
@@ -52,6 +53,16 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    setNav: (nav) => {
+      dispatch({ type: CHANGE_NAV, payload: nav })
+    }
+  };
+};
+
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Sidebar);

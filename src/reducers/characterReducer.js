@@ -1,3 +1,5 @@
+import { SET_CHARACTERS, SET_FREE_CHARACTERS, ADD_CHARACTER, RESET_CHARACTERS } from '../constants'
+
 export default function userReducer(
   state = {
     characters: [],
@@ -6,13 +8,13 @@ export default function userReducer(
   action
 ) {
   switch (action.type) {
-    case 'SET_CHARACTERS':
+    case  SET_CHARACTERS:
       return {...state, characters: action.payload};
-    case 'SET_FREE_CHARACTERS':
+    case SET_FREE_CHARACTERS:
       return {...state, freeCharacters: action.payload};
-    case 'ADD_CHARACTER':
+    case ADD_CHARACTER:
       return {...state, characters: [...state.characters, action.payload]};
-    case 'RESET_CHARACTERS':
+    case RESET_CHARACTERS:
       return {...state, characters: []};
 
     default:

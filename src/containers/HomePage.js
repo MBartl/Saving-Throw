@@ -9,7 +9,7 @@ class HomePage extends Component {
 
   componentDidMount() {
     if (this.props.user !== null) {
-      this.props.setCharacters();      
+      this.props.setCharacters();
     }
   };
 
@@ -22,9 +22,9 @@ class HomePage extends Component {
           :
           this.props.user ?
 
-            <h1>Welcome {this.props.user.name}</h1>
+            <h1 className='homepageText'>Welcome {this.props.user.name}</h1>
 
-          : <h1>This is the logged out homepage</h1>
+          : <h1 className='homepageText'>This is the logged out homepage</h1>
         }
       </div>
     );

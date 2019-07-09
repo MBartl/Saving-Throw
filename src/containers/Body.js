@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { URL, HEADERS, LOG_IN } from '../constants'
+
 import HomePage from './HomePage';
 
 import Loader from '../Loader';
@@ -12,7 +14,6 @@ import CharactersHome from './characters/CharactersHome';
 import NewCharacterForm from '../components/NewCharacterForm';
 
 import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
-import { url } from '../route';
 import { connect } from 'react-redux';
 
 
@@ -22,12 +23,9 @@ class Body extends Component {
     let path;
     userInput.user ? path = 'users' : path = 'login';
 
-    fetch(url + path, {
+    fetch(URL + path, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: HEADERS,
       body: JSON.stringify(userInput)
     })
     .then(res => res.json())
@@ -55,7 +53,7 @@ class Body extends Component {
     return (
       <div id='body'>
         {
-          this.props.loadState ?
+          this.props.loadState && this.state.user ?
             <Loader />
           :
           <Switch>
@@ -102,7 +100,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     login: (user) => {
-      dispatch({ type: 'LOG_IN', payload: user })
+      dispatch({ type: LOG_IN, payload: user })
     }
   };
 };
