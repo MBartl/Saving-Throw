@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { URL, HEADERS, UPDATE_CAMPAIGN, SET_FREE_CHARACTERS } from '../../constants'
+import { URL, HEADERS, UPDATE_CAMPAIGN, SET_FREE_CHARACTERS, UPDATE_CHAT } from '../../constants'
 
 import CharacterCard from '../../components/CharacterCard';
 import Popup from 'reactjs-popup';
@@ -58,7 +58,7 @@ class CampaignShow extends Component {
         headers: {...HEADERS,
           'Authorization': token
         },
-        body: JSON.stringify({name})
+        body: JSON.stringify({ name })
       })
       .then(res => res.json())
       .then(doc => {
@@ -92,7 +92,7 @@ class CampaignShow extends Component {
         headers: {...HEADERS,
           'Authorization': token
         },
-        body: JSON.stringify({description})
+        body: JSON.stringify({ description })
       })
       .then(res => res.json())
       .then(doc => {
@@ -115,7 +115,7 @@ class CampaignShow extends Component {
       headers: {...HEADERS,
         'Authorization': token
       },
-      body: JSON.stringify({campaign: {campaign_id, character_id}})
+      body: JSON.stringify({ campaign: { campaign_id, character_id } })
     })
     .then(res => res.json())
     .then(doc => {
@@ -124,6 +124,7 @@ class CampaignShow extends Component {
     } else {
       this.props.updateCampaign(doc.campaign);
       this.props.setFreeCharacters(this.props.freeCharacters.filter(c => c.id !== doc.character_id));
+      this.props.updateChat(doc.chat)
     }});
   };
 
@@ -259,6 +260,9 @@ const mapDispatchToProps = dispatch => {
     },
     setFreeCharacters: (characters) => {
       dispatch({ type: SET_FREE_CHARACTERS, payload: characters })
+    },
+    updateChat: (chat) => {
+      dispatch({ type: UPDATE_CHAT, payload: chat })
     }
   };
 };

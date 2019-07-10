@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
+import { API_WS_ROOT } from './constants';
+
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { ActionCableProvider } from 'react-actioncable-provider';
 
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
@@ -20,7 +23,9 @@ const store = createStore(rootReducer(), composeWithDevTools(
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Route component={App} />
+      <ActionCableProvider url={API_WS_ROOT}>
+        <Route component={App} />
+      </ActionCableProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

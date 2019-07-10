@@ -301,10 +301,12 @@ input.level {
 
 .cardContainerNil {
   margin-top: 0.5em;
+  margin-bottom: 3em;
 }
 
 .campaignCardContainer {
   margin-top: 0.65em;
+  margin-bottom: 3em;
 }
 
 .discoverToggle, .showToggle {
@@ -394,6 +396,148 @@ input.level {
   left: 18em!important;
 }
 
+.chatChoice {
+  border-color: #fff;
+  border-width: thin;
+  border-style: double;
+  margin: 0.45em 0;
+  padding: 0.45em;
+}
+
+.chatChoice:hover {
+  cursor: pointer;
+}
+
+.chatBox {
+  width: 15em;
+  height: 2.44em;
+  background-color: #000;
+  position: fixed;
+  bottom: 4em;
+  margin-right: 0.05em;
+  border-style: ridge;
+  border-width: thin;
+  border-top: none;
+  text-align: left;
+}
+
+.closeChat {
+  position: absolute;
+  right: 4px;
+  top: 11px;
+  width: 32px;
+  height: 24px;
+  opacity: 0.7;
+}
+
+.closeChat:hover {
+  opacity: 1;
+}
+
+.closeChat:before, .closeChat:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 20px;
+  width: 2px;
+  background-color: #333;
+}
+
+.closeChat:before {
+  transform: rotate(45deg);
+}
+
+.closeChat:after {
+  transform: rotate(-45deg);
+}
+
+.chatBox.open {
+  height: 18em;
+}
+
+.chatTitle {
+  margin: 0;
+  border-style: outset;
+  padding: 0.2em;
+}
+
+.chatTitle:active, .chatChoice:active {
+  transform: translateY(2px)
+}
+
+#chatOptions:active {
+
+}
+
+.msgAuthor {
+  font-size: 85%;
+  text-align: right;
+  margin: 0.3em;
+}
+
+.msgText {
+  font-size: 80%;
+  text-align: left;
+  margin: 0 0.3em 1em 0.3em;
+}
+
+.messages {
+  overflow-y: scroll;
+  position: relative;
+  height: 13.35em;
+  display: none!important;
+}
+
+.messages.active {
+  display: block!important;
+}
+
+.msgBox {
+  position: absolute;
+  bottom: -2.82em;
+  right: 0.4em;
+  height: 0.6em;
+  width: 90%;
+  font-size: 77%;
+  padding: 10px 5px;
+  display: none!important;
+}
+
+.msgBox.active {
+  bottom: 0;
+  display: block!important;
+}
+
+#chatMainBox {
+  height: fit-content;
+  padding: 0;
+  background-color: #000;
+  position: fixed;
+  bottom: 4em;
+  right: 0.7em;
+  text-align: center;
+}
+
+#chatBoxText {
+  margin: 0;
+  margin-top: 0.1em;
+  margin-right: 0.1em;
+}
+
+#chatBoxText:hover {
+  cursor: pointer;
+}
+
+#chatSelectBox {
+  text-align: left;
+  padding: 0 0.5em;
+}
+
+#chatOptions {
+  width: 12.5em;
+  border-style: ridge;
+}
+
 #title {
   display: table-cell;
   vertical-align: bottom;
@@ -422,6 +566,7 @@ input.level {
 
 #body {
   margin-left: 8em;
+  margin-bottom: 3em;
   height: 92%;
 }
 
@@ -434,7 +579,7 @@ input.level {
   bottom: 0;
   z-index: 1;
   background-color: rgb(32, 43, 56);
-  padding: 0.5em;
+  padding: 1em;
 }
 
 #signup {

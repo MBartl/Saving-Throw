@@ -10,6 +10,7 @@ import Header from './containers/Header';
 import Sidebar from './containers/Sidebar';
 import Loader from './Loader';
 import Body from './containers/Body';
+import Chat from './containers/chat/Chat'
 import Footer from './containers/Footer';
 
 import { connect } from 'react-redux';
@@ -111,6 +112,7 @@ class App extends Component {
             <Body setCharacters={this.setCharacters}
               setCampaigns={this.setCampaigns} />
         }
+        <Chat />
         <Footer />
       </div>
     );
@@ -130,10 +132,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loading: () => {
-      dispatch({type: LOADING})
+      dispatch({ type: LOADING })
     },
     autoLogin: (user) => {
-      dispatch({type: LOG_IN, payload: user})
+      dispatch({ type: LOG_IN, payload: user })
     },
     characterLoad: () => {
       dispatch({ type: CHARACTER_LOADING })

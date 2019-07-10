@@ -38,6 +38,7 @@ class NewCharacterForm extends Component {
     const currentRace = this.displayRace(this.state.raceIndex);
     const subraceText = this.displaySubrace(this.state.subraceIndex);
     let currentSubrace;
+    debugger
     if (subraceText.split(' ')[1].length > 2) {
       currentSubrace = subraceText.split(' ')[1] + ' ' + currentRace
     };

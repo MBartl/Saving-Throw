@@ -1,6 +1,5 @@
 import { LOG_IN, LOG_OUT } from '../constants'
 
-
 export default function userReducer(
   state = {
     currentUser: null

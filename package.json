@@ -5,6 +5,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "react": "^16.8.6",
+    "react-actioncable-provider": "^2.0.0",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
