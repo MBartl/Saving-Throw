@@ -12,6 +12,7 @@ export const CAMPAIGN_LOADING = 'CAMPAIGN_LOADING';
 export const CHARACTER_LOADING = 'CHARACTER_LOADING';
 export const DISCOVER_LOADING = 'DISCOVER_LOADING';
 export const RESET_LOADINGS = 'RESET_LOADINGS';
+export const CHAR_SHOW_LOADING = 'CHAR_SHOW_LOADING';
 
 // user constants
 export const LOG_IN = 'LOG_IN';

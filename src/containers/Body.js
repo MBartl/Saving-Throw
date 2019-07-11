@@ -32,7 +32,7 @@ class Body extends Component {
         const errors = response.errors.split('<<|>>');
         alert(errors);
       } else {
-        localStorage.setItem("token", response.jwt);
+        localStorage.setItem("token", response.token);
         this.props.login(response.user);
 
         if (response.path === 'signup'|| response.path === 'login') {
@@ -46,6 +46,7 @@ class Body extends Component {
         this.props.setCharacters();
         this.props.setCampaigns();
         this.props.setChats();
+        this.props.bufferOff();
       };
     });
   };

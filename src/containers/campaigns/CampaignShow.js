@@ -124,7 +124,9 @@ class CampaignShow extends Component {
     } else {
       this.props.updateCampaign(doc.campaign);
       this.props.setFreeCharacters(this.props.freeCharacters.filter(c => c.id !== doc.character_id));
-      this.props.updateChat(doc.chat)
+      if (!this.props.chats.includes(doc.chat)) {
+        this.props.updateChat(doc.chat)
+      };
     }});
   };
 
@@ -150,8 +152,8 @@ class CampaignShow extends Component {
         {
           this.props.nav === 'More' ?
             <Popup trigger={
-              <button disabled={this.props.loading} onClick={() => this.toggleJoining()} id='joinCampaignBtn'>
-              Join</button>} position="center center">
+              <button disabled={this.props.loading} id='joinCampaignBtn'>Join</button>
+            } position="center center">
               { close => (
                 <div id='joinCampaignPopup'>
                   {
@@ -163,7 +165,14 @@ class CampaignShow extends Component {
                         );
                       })
                     :
-                    "You don't have any available characters. Create a new character to join."
+                    <div>
+                      <br />
+                      <br />
+                      <p>
+                        You don't have any available characters.<br />
+                        Create a new character to join.
+                      </p>
+                    </div>
                   }
                 </div>
               )}
@@ -246,6 +255,7 @@ const mapStateToProps = state => {
   return {
     nav: state.campaign.nav,
     loading: state.load.characterLoading,
+    chats: state.chat.chats,
     campaigns: state.campaign.campaigns,
     characterCampaigns: state.campaign.characterCampaigns,
     discover: state.campaign.discover,

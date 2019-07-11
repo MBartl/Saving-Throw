@@ -92,7 +92,7 @@ class MainCampaign extends Component {
           null
         }
         {
-          !this.props.campaigns && !this.props.characterCampaigns && !this.props.loadState ?
+          !this.props.campaigns.length && !this.props.characterCampaigns.length && !this.props.loadState ?
             <h2>You don't have any campaigns yet</h2>
           :
           null

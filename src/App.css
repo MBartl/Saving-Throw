@@ -66,13 +66,21 @@ a:visited {
   float: right;
 }
 
+.homepageText {
+  margin: 1em;
+}
+
 .sideBtn {
   margin-top: 3.45em;
   padding: 10px 0;
 }
 
-.homepageText {
-  margin: 1em;
+.sideBtn.l {
+  margin-top: 0;
+}
+
+.sideBtn.lo {
+  margin-top: 6.38em;
 }
 
 .addSideBtn {
@@ -225,7 +233,7 @@ input.level {
 
 .bodyBtn:hover, .bodyBtn:focus {
   border-bottom: #fff;
-  border-bottom-style: double;
+  border-bottom-style: solid;
   font-weight: bolder;
 }
 
@@ -242,6 +250,15 @@ input.level {
 
 .charCard:hover, .campaignCard:hover {
   cursor: pointer;
+}
+
+/* Disabled char card hover for now */
+.charCard:hover {
+  cursor: default;
+}
+
+.charCard.s:hover {
+  cursor: default;
 }
 
 .campaignCardHeader {
@@ -608,10 +625,6 @@ input.level {
   background-color: rgb(32, 43, 56);
   padding: 1em;
   padding-top: 0.4em;
-}
-
-#signup {
-  margin-top: 0;
 }
 
 #homepage {

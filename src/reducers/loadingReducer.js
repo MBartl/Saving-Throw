@@ -1,11 +1,12 @@
-import { LOADING, CAMPAIGN_LOADING, CHARACTER_LOADING, DISCOVER_LOADING, RESET_LOADINGS } from '../constants'
+import { LOADING, CAMPAIGN_LOADING, CHARACTER_LOADING, CHAR_SHOW_LOADING, DISCOVER_LOADING, RESET_LOADINGS } from '../constants'
 
 export default function loadingReducer(
   state = {
     loading: true,
     characterLoading: true,
     campaignLoading: true,
-    discoverLoad: true
+    discoverLoad: true,
+    charShowLoad: true
   },
   action
 ) {
@@ -16,6 +17,8 @@ export default function loadingReducer(
       return {...state, campaignLoading: false};
     case CHARACTER_LOADING:
       return {...state, characterLoading: false};
+    case CHAR_SHOW_LOADING:
+      return {...state, charShowLoad: false}
     case DISCOVER_LOADING:
       return {...state, discoverLoad: false}
     case RESET_LOADINGS:

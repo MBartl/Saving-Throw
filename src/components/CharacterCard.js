@@ -11,12 +11,16 @@ class CharacterCard extends Component {
   };
 
   routeToShow = (e) => {
-    if (e.target.id === "joinSubmitBtn") {
-      this.handleSelect(e);
-    }
-    else {
-      this.props.history.push(`/characters/${this.props.character.id}`);
-    };
+    // disabled route to show for now
+    return
+
+
+    // if (e.target.id === "joinSubmitBtn") {
+    //   this.handleSelect(e);
+    // }
+    // else {
+    //   this.props.history.push(`/characters/${this.props.character.id}`);
+    // };
   };
 
   raceDisplay = () => {
@@ -38,7 +42,7 @@ class CharacterCard extends Component {
       <div onClick={this.routeToShow} className={this.props.popup ? 'charCard S' : 'charCard'}>
         {
           this.props.popup ?
-            <button id='joinSubmitBtn'>Select</button>
+            <button id='joinSubmitBtn' onClick={this.handleSelect}>Select</button>
           :
           null
         }

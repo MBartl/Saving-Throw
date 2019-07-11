@@ -20,6 +20,7 @@ class App extends Component {
 
   // Chat options and prompt
   state = {
+    buffer: true,
     hideChats: true,
     displayWarning: false
   }
@@ -35,22 +36,24 @@ class App extends Component {
       .then(res => res.json())
       .then(response => {
         if (response.errors){
-          localStorage.removeItem('token')
-          alert(response.errors)
+          localStorage.removeItem('token');
+          alert(response.errors);
         } else {
-          this.props.autoLogin(response)
-          this.props.loading()
+          this.props.autoLogin(response);
+          this.props.loading();
+          this.bufferOff();
         }
       })
     } else {
-      this.props.loading()
+      this.props.loading();
+      this.bufferOff();
     };
   };
 
   setCharacters = () => {
     const token = localStorage.getItem('token');
 
-    if (this.props.characters.length === 0) {
+    if (token && this.props.characters.length === 0) {
       fetch(URL + 'characters', {
         headers: {'Authorization': token}
       })
@@ -78,7 +81,7 @@ class App extends Component {
   setCampaigns = () => {
     const token = localStorage.getItem('token');
 
-    if (this.props.campaigns.length === 0 &&
+    if (token && this.props.campaigns.length === 0 &&
       this.props.characterCampaigns.length === 0) {
 
       fetch(URL + 'campaigns', {
@@ -111,14 +114,16 @@ class App extends Component {
   setChats = () => {
     const token = localStorage.getItem('token');
 
-    if (token) {
+    if (token && this.props.chats.length === 0) {
       fetch(URL + 'chats', {
         headers: {'Authorization': token}
       })
       .then(res => res.json())
       .then(chats => {
-        this.props.setChats(chats)
-        chats.map(chat => chat.messages).forEach(list => this.props.setMessages(list))
+        if (chats.length) {
+          this.props.setChats(chats)
+          chats.map(chat => chat.messages).forEach(list => this.props.setMessages(list))
+        }
       })
       .then(() => this.displayWarning());
     };
@@ -142,19 +147,28 @@ class App extends Component {
     });
   };
 
+  bufferOff = () => {
+    if (this.state.buffer === false) {return}
+    this.setState({
+      buffer: false
+    })
+  }
+
   render() {
     return (
       <div className='App'>
         <Header />
         <Sidebar setCampaigns={this.setCampaigns}
           setCharacters={this.setCharacters}
-          closeChatOptions={this.closeChatOptions} />
+          closeChatOptions={this.closeChatOptions}
+          buffer={this.state.buffer}/>
         {
           this.props.loadState ?
             <Loader /> :
             <Body setCharacters={this.setCharacters}
               setCampaigns={this.setCampaigns}
-              setChats={this.setChats} />
+              setChats={this.setChats}
+              bufferOff={this.bufferOff}/>
         }
         <Chat setChats={this.setChats} toggleChats={this.toggleChats}
           hideChats={this.state.hideChats} displayWarning={this.state.displayWarning} />
@@ -167,7 +181,7 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
-    user: state.user,
+    chats: state.chat.chats,
     campaigns: state.campaign.campaigns,
     characterCampaigns: state.campaign.characterCampaigns,
     characters: state.character.characters

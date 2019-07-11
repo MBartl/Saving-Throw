@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { URL } from '../../constants'
+import { URL, CHAR_SHOW_LOADING } from '../../constants';
+
+import { connect } from 'react-redux';
 
 class CharacterShow extends Component {
 
@@ -123,6 +125,7 @@ class CharacterShow extends Component {
     // };
 
     componentDidMount() {
+      this.props.charShowLoading()
       const token = localStorage.getItem('token');
       const id = this.props.match.params.id
 
@@ -258,4 +261,21 @@ class CharacterShow extends Component {
 //
 // };
 
-export default CharacterShow;
+const mapStateToProps = state => {
+  return {
+    loading: state.load.charShowLoad
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    charShowLoading: () => {
+      dispatch({type: CHAR_SHOW_LOADING})
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CharacterShow);

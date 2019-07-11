@@ -22,7 +22,8 @@ class NewCharacterForm extends Component {
     max: [15, 15, 17, null, 15, 16, 15],
     min: [8, 8, 10, null, 8, 9, 8],
     points: 27,
-    pointMode: 'Points'
+    pointMode: 'Points',
+    submit: false
   };
 
   componentDidMount() {
@@ -32,6 +33,9 @@ class NewCharacterForm extends Component {
   // On form submit send character to backend
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({
+      submit: true
+    })
 
     const token = localStorage.getItem('token');
 
@@ -67,7 +71,9 @@ class NewCharacterForm extends Component {
         alert(doc.errors)
       } else {
         this.props.addCharacter(doc.character)
-        this.props.history.push(`/characters/${doc.character.id}`)
+        this.props.history.push(`/characters`)
+        // disabled character show for now
+        // this.props.history.push(`/characters/${doc.character.id}`)
       }
     });
   };
@@ -589,7 +595,7 @@ class NewCharacterForm extends Component {
           <button onClick={this.pointMode} className={this.state.pointMode === 'Manual' ? 'ptsMode selected' : 'ptsMode'} id='left'>Manual</button>
           <button onClick={this.pointMode} className={this.state.pointMode === 'Random' ? 'ptsMode selected' : 'ptsMode'}>Random</button>
           <button onClick={this.pointMode} className={this.state.pointMode === 'Points' ? 'ptsMode selected' : 'ptsMode'}>Points</button>
-          <button value='submit' id='characterSubmit' onClick={this.handleSubmit}>Next</button>
+          <button value='submit' id='characterSubmit' disabled={this.state.submit} onClick={this.handleSubmit}>Next</button>
         </form>
       </Fragment>
     );

@@ -18,43 +18,51 @@ class Sidebar extends Component {
 
   render() {
     const loadState = this.props.charLoadState || this.props.campLoadState
-    const loading = this.props.user && loadState
+    const loading = loadState && this.props.buffer
     return (
       <div id='sidebar'>
         { loading ?
           <SideLoader />
         :
+          this.props.user && loadState ?
+            <SideLoader />
+          :
             null
         }
-        <Link to='/home'>
-          <button id='home' className={loading ? 'addSideBtn' : 'sideBtn'}>Home</button>
-        </Link>
-        { this.props.user ?
+        {
+          this.props.buffer ?
+            null
+          :
+          this.props.user ?
+            <Fragment>
+              <Link to='/characters'>
+                <button disabled={this.props.charLoadState}
+                  className={loadState ? 'addSideBtn' : 'sideBtn'}>Characters</button>
+              </Link>
+              <Link to='/campaigns'>
+                <button disabled={this.props.campLoadState} onClick={() => this.props.setNav('Home')} className='addSideBtn'>Campaigns</button>
+              </Link>
+              <Link to='/home'>
+                <button id='home'  className='sideBtn'>Home</button>
+              </Link>
+              <Link to='/home'>
+                <button disabled={this.props.campLoadState && this.props.charLoadState} onClick={this.logOut} className='addSideBtn'>Log Out</button>
+              </Link>
+            </Fragment>
+          :
           <Fragment>
-            <Link to='/characters'>
-              <button disabled={this.props.charLoadState}
-              className='addSideBtn'>Characters</button>
-            </Link>
-            <Link to='/campaigns'>
-              <button disabled={this.props.campLoadState} onClick={() => this.props.setNav('Home')} className='addSideBtn'>Campaigns</button>
-            </Link>
             <Link to='/home'>
-              <button disabled={this.props.campLoadState && this.props.charLoadState} onClick={this.logOut} className='addSideBtn'>Log Out</button>
+              <button id='home' className='sideBtn lo'>
+                Home
+              </button>
+            </Link>
+            <Link to='/login'>
+              <button className='sideBtn'>Log In</button>
+            </Link>
+            <Link to='/signup'>
+              <button className='addSideBtn'>Sign Up</button>
             </Link>
           </Fragment>
-        :
-        <Fragment>
-          <Link className='addSideBtn' to='/signup'>
-            <button className='addSideBtn' id='signup'>
-              {this.props.loadState ? null :"Sign Up"}
-            </button>
-          </Link>
-          <Link to='/login'>
-            <button className='addSideBtn'>
-              {this.props.loadState ? null : "Log In"}
-            </button>
-          </Link>
-        </Fragment>
         }
         <div id='bottomAnchor'></div>
       </div>
