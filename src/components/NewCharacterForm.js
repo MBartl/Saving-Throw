@@ -38,8 +38,7 @@ class NewCharacterForm extends Component {
     const currentRace = this.displayRace(this.state.raceIndex);
     const subraceText = this.displaySubrace(this.state.subraceIndex);
     let currentSubrace;
-    debugger
-    if (subraceText.split(' ')[1].length > 2) {
+    if (subraceText && subraceText.split(' ').length > 2) {
       currentSubrace = subraceText.split(' ')[1] + ' ' + currentRace
     };
     if (currentSubrace === 'Dark Elf') {currentSubrace = 'Dark Elf (Drow)'};
@@ -57,9 +56,8 @@ class NewCharacterForm extends Component {
 
     fetch(URL + 'characters', {
       method: 'POST',
-      headers: {
+      headers: {...HEADERS,
         'Authorization': token,
-        HEADERS
       },
       body: JSON.stringify(character)
     })
@@ -69,7 +67,7 @@ class NewCharacterForm extends Component {
         alert(doc.errors)
       } else {
         this.props.addCharacter(doc.character)
-        this.props.history.push(`/characters`)
+        this.props.history.push(`/characters/${doc.character.id}`)
       }
     });
   };
@@ -362,7 +360,6 @@ class NewCharacterForm extends Component {
       );
     });
 
-    debugger
     this.setState({
       points: this.state.points+pointAdj
     });
@@ -541,7 +538,7 @@ class NewCharacterForm extends Component {
                         <span> ▶</span>
                       </button>
                     </Fragment>
-                  : <div>---</div>
+                  : <br />
                 }
               </div>
             </div>

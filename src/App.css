@@ -233,7 +233,7 @@ input.level {
   max-width: 52em;
 }
 
-.campaignCard:hover {
+.charCard:hover, .campaignCard:hover {
   cursor: pointer;
 }
 
@@ -431,6 +431,7 @@ input.level {
 }
 
 .closeChat:hover {
+  cursor: pointer;
   opacity: 1;
 }
 

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 
-import { ActionCableConsumer } from 'react-actioncable-provider';
 import { URL, SET_CHATS, SET_MESSAGES, UPDATE_MESSAGES, SET_OPEN_CHATS, SET_ACTIVE_CHAT, CLOSE_CHAT, HEADERS } from '../../constants';
 import Cables from './Cables';
 import ChatSelect from './ChatSelect';

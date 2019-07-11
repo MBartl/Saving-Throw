@@ -3,15 +3,13 @@ import React, { Component } from 'react';
 import { URL, HEADERS, LOG_IN } from '../constants'
 
 import HomePage from './HomePage';
-
 import Loader from '../Loader';
+
 import SignUpForm from '../components/SignUpForm';
 import LogInForm from '../components/LogInForm';
 
 import CampaignsHome from './campaigns/CampaignsHome';
-
 import CharactersHome from './characters/CharactersHome';
-import NewCharacterForm from '../components/NewCharacterForm';
 
 import { Switch, Redirect, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -44,9 +42,11 @@ class Body extends Component {
       };
     })
     .then(() => {
-      this.props.setCharacters();
-      this.props.setCampaigns()
-    })
+      if (this.props.user) {
+        this.props.setCharacters();
+        this.props.setCampaigns();
+      };
+    });
   };
 
   render() {
@@ -74,13 +74,9 @@ class Body extends Component {
                   setCampaigns={this.props.setCampaigns} />
               }} />
 
-            <Route path='/characters' render={(routerProps) => {
+            <Route path='/(characters|new-character)' render={(routerProps) => {
               return <CharactersHome {...routerProps}
                 setCharacters={this.props.setCharacters} />
-            }} />
-            <Route path='/new-character' render={(routerProps) => {
-              return <NewCharacterForm {...routerProps}
-                setCharacters={this.props.setCharacters}/>
             }} />
             <Redirect from='/' to='/home' />
           </Switch>
@@ -93,7 +89,7 @@ class Body extends Component {
 const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
-    user: state.user,
+    user: state.user.currentUser,
   };
 };
 

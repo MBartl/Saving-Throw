@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { CHANGE_NAV } from '../constants'
+import { CHANGE_NAV, LOG_OUT, RESET_CAMPAIGNS, RESET_CHARACTERS, RESET_LOADINGS } from '../constants'
 
 import SideLoader from '../SideLoader';
 
@@ -9,6 +9,14 @@ import { connect } from 'react-redux';
 
 
 class Sidebar extends Component {
+
+  logOut = () => {
+    this.props.logOut(this.props.user);
+    this.props.resetCampaigns();
+    this.props.resetCharacters();
+    this.props.resetLoadings();
+    localStorage.removeItem('token');
+  };
 
   render() {
     const loadState = this.props.charLoadState || this.props.campLoadState
@@ -20,23 +28,35 @@ class Sidebar extends Component {
         :
             null
         }
+        <Link to='/home'>
+          <button id='home' className={loading ? 'addSideBtn' : 'sideBtn'}>Home</button>
+        </Link>
         { this.props.user ?
           <Fragment>
             <Link to='/characters'>
               <button disabled={this.props.charLoadState}
-                className={loading ? 'addSideBtn' : 'sideBtn'}>Characters</button>
+              className='addSideBtn'>Characters</button>
             </Link>
             <Link to='/campaigns'>
-              <button  disabled={this.props.campLoadState} onClick={() => this.props.setNav('Home')} className='addSideBtn'>Campaigns</button>
+              <button disabled={this.props.campLoadState} onClick={() => this.props.setNav('Home')} className='addSideBtn'>Campaigns</button>
+            </Link>
+            <Link to='/home'>
+              <button disabled={this.props.campLoadState && this.props.charLoadState} onClick={this.logOut} className='addSideBtn'>Log Out</button>
             </Link>
           </Fragment>
         :
-          null
-        }
-        { this.props.loadState ? null :
-        <Link to='/'>
-          <button className={loading || this.props.user ? 'addSideBtn' : 'sideBtn'}>Compendium</button>
-        </Link>
+        <Fragment>
+          <Link className='addSideBtn' to='/signup'>
+            <button className='addSideBtn' id='signup'>
+              {this.props.loadState ? null :"Sign Up"}
+            </button>
+          </Link>
+          <Link to='/login'>
+            <button className='addSideBtn'>
+              {this.props.loadState ? null : "Log In"}
+            </button>
+          </Link>
+        </Fragment>
         }
       </div>
     );
@@ -57,10 +77,21 @@ const mapDispatchToProps = dispatch => {
   return {
     setNav: (nav) => {
       dispatch({ type: CHANGE_NAV, payload: nav })
+    },
+    logOut: (token) => {
+      dispatch({type: LOG_OUT, payload: token})
+    },
+    resetCampaigns: () => {
+      dispatch({type: RESET_CAMPAIGNS})
+    },
+    resetCharacters: () => {
+      dispatch({type: RESET_CHARACTERS})
+    },
+    resetLoadings: () => {
+      dispatch({type: RESET_LOADINGS})
     }
   };
 };
-
 
 export default connect(
   mapStateToProps,

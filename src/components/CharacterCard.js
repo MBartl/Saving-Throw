@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 
 class CharacterCard extends Component {
 
-  handleClick = (e) => {
+  handleSelect = (e) => {
     this.props.close(e);
     this.props.joinCampaign(this.props.campaign, this.props.character);
   };
 
+  routeToShow = (e) => {
+    if (e.target.id === "joinSubmitBtn") {
+      this.handleSelect(e);
+    }
+    else {
+      this.props.history.push(`/characters/${this.props.character.id}`);
+    };
+  };
+
+  raceDisplay = () => {
+    const races = ["Dwarf", "Elf", "Halfling", "Human", "Dragonborn", "Gnome", "Half-Elf", "Half-Orc", "Tiefling"]
+
+    return races[this.props.character.race_id-1]
+  }
+
+  playerClassDisplay = () => {
+    const pclass = ["Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"]
+
+    return pclass[this.props.character.player_class_id-1]
+  }
+
+
   render() {
     const character = this.props.character
     return (
-      <div className={this.props.popup ? 'charCard S' : 'charCard'}>
+      <div onClick={this.routeToShow} className={this.props.popup ? 'charCard S' : 'charCard'}>
         {
           this.props.popup ?
-            <button onClick={(e) => this.handleClick(e)} id='joinSubmitBtn'>Select</button>
+            <button id='joinSubmitBtn'>Select</button>
           :
           null
         }
@@ -37,29 +59,19 @@ class CharacterCard extends Component {
         <p className='charRightNums'>LVL: {character.level}<br />
           HP: {character.hit_points}</p>
 
-        {
-          this.props.popup ?
-            <p className='raceAndClass'>
-              {this.props.character.race.name} {this.props.character.player_class.name}
-            </p>
-          :
+        { this.props.character.player_class && this.props.character.race ?
           <p className='raceAndClass'>
-            {this.props.races[character.race_id-1]} {this.props.classes[character.player_class_id-1]}
+            {this.props.character.race.name} {this.props.character.player_class.name}
           </p>
+        :
+        <p className='raceAndClass'>
+          {this.raceDisplay()} {this.playerClassDisplay()}
+        </p>
         }
       </div>
     );
-  }
-
-}
-
-const mapStateToProps = state => {
-  return {
-    races: state.race.races,
-    classes: state.class.classes
   };
+
 };
 
-export default connect(
-  mapStateToProps
-)(CharacterCard);
+export default withRouter(CharacterCard);
