@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { URL, SET_CHATS, SET_MESSAGES, UPDATE_MESSAGES, SET_OPEN_CHATS, SET_ACTIVE_CHAT, CLOSE_CHAT, HEADERS } from '../../constants';
+import { URL, UPDATE_MESSAGES, SET_OPEN_CHATS, SET_ACTIVE_CHAT, CLOSE_CHAT, HEADERS } from '../../constants';
 import Cables from './Cables';
 import ChatSelect from './ChatSelect';
 import ChatBox from './ChatBox';
@@ -10,45 +10,12 @@ import { connect } from 'react-redux';
 
 class Chat extends React.Component {
 
-  state = {
-    hideChats: true,
-    displayWarning: false
-  };
-
   componentDidMount() {
-    this.getChats();
-  };
-
-  getChats = () => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      fetch(URL + 'chats', {
-        headers: {'Authorization': token}
-      })
-      .then(res => res.json())
-      .then(chats => {
-        this.props.setChats(chats)
-        chats.map(chat => chat.messages).forEach(list => this.props.setMessages(list))
-      })
-      .then(() => this.displayWarning());
-    }
-  };
-
-  toggleChats = () => {
-    this.setState({
-      hideChats: !this.state.hideChats
-    });
+    this.props.setChats();
   };
 
   closeChat = (chat) => {
     this.props.closeChat(chat);
-  };
-
-  displayWarning = () => {
-    this.setState({
-      displayWarning: true
-    });
   };
 
   openChat = id => {
@@ -143,17 +110,17 @@ class Chat extends React.Component {
             <div id='chatOptions'>
               {chats.length > 0 ?
                 <Fragment>
-                  <div hidden={this.state.hideChats}>
+                  <div hidden={this.props.hideChats}>
                     <ChatSelect chats={chats} openChat={this.openChat} />
                   </div>
                 </Fragment>
               :
-                this.state.displayWarning && !this.state.hideChats ?
+                this.props.displayWarning && !this.props.hideChats ?
                   "Join a campaign first!"
                 :
                 null
               }
-              <h2 id='chatBoxText' onClick={() => this.toggleChats()}>Chat</h2>
+              <h2 id='chatBoxText' onClick={() => this.props.toggleChats()}>Chat</h2>
             </div>
           :
           null
@@ -175,12 +142,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setChats: (chats) => {
-      dispatch({ type: SET_CHATS, payload: chats })
-    },
-    setMessages: (messages) => {
-      dispatch({ type: SET_MESSAGES, payload: messages })
-    },
     updateMessages: (message) => {
       dispatch({ type: UPDATE_MESSAGES, payload: message })
     },

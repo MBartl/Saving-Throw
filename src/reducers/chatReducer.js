@@ -1,4 +1,4 @@
-import { SET_CHATS, SET_MESSAGES, UPDATE_MESSAGES, SET_OPEN_CHATS, SET_ACTIVE_CHAT, UPDATE_CHAT, CLOSE_CHAT } from '../constants'
+import { SET_CHATS, SET_MESSAGES, UPDATE_MESSAGES, SET_OPEN_CHATS, SET_ACTIVE_CHAT, UPDATE_CHAT, CLOSE_CHAT, RESET_CHATS } from '../constants'
 
 export default function userReducer(
   state = {
@@ -24,6 +24,8 @@ export default function userReducer(
       return {...state, chats: [...state.chats, action.payload]};
     case CLOSE_CHAT:
       return {...state, openChats: [...state.openChats.filter(chat => chat !== action.payload)]};
+    case RESET_CHATS:
+      return {...state, chats: [], messages: [], openChats: [], activeChat: null};
 
     default:
       return state;

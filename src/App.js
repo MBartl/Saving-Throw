@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { URL, LOADING, LOG_IN, CHARACTER_LOADING, SET_CHARACTERS, SET_FREE_CHARACTERS, CAMPAIGN_LOADING, SET_CAMPAIGNS, SET_CHARACTER_CAMPAIGNS } from './constants'
+import { URL, LOADING, LOG_IN, CHARACTER_LOADING, SET_CHARACTERS, SET_FREE_CHARACTERS, CAMPAIGN_LOADING, SET_CAMPAIGNS, SET_CHARACTER_CAMPAIGNS, SET_CHATS, SET_MESSAGES } from './constants'
 
 import './App.css';
 import './Loader.css';
@@ -17,6 +17,12 @@ import { connect } from 'react-redux';
 
 
 class App extends Component {
+
+  // Chat options and prompt
+  state = {
+    hideChats: true,
+    displayWarning: false
+  }
 
   // Auto Login
   componentDidMount(){
@@ -60,6 +66,7 @@ class App extends Component {
       })
       .then(() => {
         this.setCampaigns();
+        this.setChats();
         this.props.characterLoad();
       });
     }
@@ -91,6 +98,7 @@ class App extends Component {
       })
       .then(() => {
         this.setCharacters();
+        this.setChats();
         this.props.campaignLoad()}
       );
     }
@@ -100,19 +108,56 @@ class App extends Component {
     };
   };
 
+  setChats = () => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      fetch(URL + 'chats', {
+        headers: {'Authorization': token}
+      })
+      .then(res => res.json())
+      .then(chats => {
+        this.props.setChats(chats)
+        chats.map(chat => chat.messages).forEach(list => this.props.setMessages(list))
+      })
+      .then(() => this.displayWarning());
+    };
+  };
+
+  displayWarning = () => {
+    this.setState({
+      displayWarning: true
+    });
+  };
+
+  toggleChats = () => {
+    this.setState({
+      hideChats: !this.state.hideChats
+    });
+  };
+
+  closeChatOptions = () => {
+    this.setState({
+      hideChats: true
+    });
+  };
+
   render() {
     return (
       <div className='App'>
         <Header />
         <Sidebar setCampaigns={this.setCampaigns}
-          setCharacters={this.setCharacters} />
+          setCharacters={this.setCharacters}
+          closeChatOptions={this.closeChatOptions} />
         {
           this.props.loadState ?
             <Loader /> :
             <Body setCharacters={this.setCharacters}
-              setCampaigns={this.setCampaigns} />
+              setCampaigns={this.setCampaigns}
+              setChats={this.setChats} />
         }
-        <Chat />
+        <Chat setChats={this.setChats} toggleChats={this.toggleChats}
+          hideChats={this.state.hideChats} displayWarning={this.state.displayWarning} />
         <Footer />
       </div>
     );
@@ -154,6 +199,12 @@ const mapDispatchToProps = dispatch => {
     },
     setCharacterCampaigns: (characterCampaigns) => {
       dispatch({ type: SET_CHARACTER_CAMPAIGNS, payload: characterCampaigns })
+    },
+    setChats: (chats) => {
+      dispatch({ type: SET_CHATS, payload: chats })
+    },
+    setMessages: (messages) => {
+      dispatch({ type: SET_MESSAGES, payload: messages })
     }
   };
 };

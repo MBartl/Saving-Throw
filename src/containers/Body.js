@@ -45,6 +45,7 @@ class Body extends Component {
       if (this.props.user) {
         this.props.setCharacters();
         this.props.setCampaigns();
+        this.props.setChats();
       };
     });
   };

@@ -25,6 +25,7 @@ export const SET_OPEN_CHATS = 'SET_OPEN_CHATS';
 export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
 export const UPDATE_CHAT = 'UPDATE_CHAT';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
+export const RESET_CHATS = 'RESET_CHATS';
 
 // campaign constants
 export const RESET_CAMPAIGNS = 'RESET_CAMPAIGNS';

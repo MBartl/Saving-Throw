@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { CHANGE_NAV, LOG_OUT, RESET_CAMPAIGNS, RESET_CHARACTERS, RESET_LOADINGS } from '../constants'
+import { CHANGE_NAV, LOG_OUT, RESET_CAMPAIGNS, RESET_CHARACTERS, RESET_LOADINGS, RESET_CHATS } from '../constants'
 
 import SideLoader from '../SideLoader';
 
@@ -12,9 +12,7 @@ class Sidebar extends Component {
 
   logOut = () => {
     this.props.logOut(this.props.user);
-    this.props.resetCampaigns();
-    this.props.resetCharacters();
-    this.props.resetLoadings();
+    this.props.closeChatOptions();
     localStorage.removeItem('token');
   };
 
@@ -58,6 +56,7 @@ class Sidebar extends Component {
           </Link>
         </Fragment>
         }
+        <div id='bottomAnchor'></div>
       </div>
     );
   };
@@ -80,15 +79,10 @@ const mapDispatchToProps = dispatch => {
     },
     logOut: (token) => {
       dispatch({type: LOG_OUT, payload: token})
-    },
-    resetCampaigns: () => {
       dispatch({type: RESET_CAMPAIGNS})
-    },
-    resetCharacters: () => {
       dispatch({type: RESET_CHARACTERS})
-    },
-    resetLoadings: () => {
       dispatch({type: RESET_LOADINGS})
+      dispatch({type: RESET_CHATS})
     }
   };
 };

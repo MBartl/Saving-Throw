@@ -216,10 +216,17 @@ input.level {
   width: 6em;
   margin-left: 0;
   font-size: 95%;
+  background: transparent;
 }
 
 .bodyBtn.selected {
   background-color: darkgrey;
+}
+
+.bodyBtn:hover, .bodyBtn:focus {
+  border-bottom: #fff;
+  border-bottom-style: double;
+  font-weight: bolder;
 }
 
 .campaignCard {
@@ -297,6 +304,14 @@ input.level {
   height: 2em;
   width: 6em;
   padding: 0;
+  background: transparent;
+  border: #fff;
+  border-style: ridge;
+  border-width: 2px;
+}
+
+.campaignInfoBtn:hover, .campaignInfoBtn:focus {
+  font-weight: 500;
 }
 
 .cardContainerNil {
@@ -410,10 +425,10 @@ input.level {
 
 .chatBox {
   width: 15em;
-  height: 2.44em;
+  height: 2.8em;
   background-color: #000;
   position: fixed;
-  bottom: 4em;
+  bottom: 3.4em;
   margin-right: 0.05em;
   border-style: ridge;
   border-width: thin;
@@ -441,7 +456,7 @@ input.level {
   content: ' ';
   height: 20px;
   width: 2px;
-  background-color: #333;
+  background-color: #fff;
 }
 
 .closeChat:before {
@@ -459,7 +474,9 @@ input.level {
 .chatTitle {
   margin: 0;
   border-style: outset;
-  padding: 0.2em;
+  padding: 0.42em;
+  padding-right: 1.5em;
+  font-size: 100%;
 }
 
 .chatTitle:active, .chatChoice:active {
@@ -514,7 +531,7 @@ input.level {
   padding: 0;
   background-color: #000;
   position: fixed;
-  bottom: 4em;
+  bottom: 3.6em;
   right: 0.7em;
   text-align: center;
 }
@@ -539,19 +556,28 @@ input.level {
   border-style: ridge;
 }
 
-#title {
-  display: table-cell;
-  vertical-align: bottom;
-  padding-left: 4em;
-  padding-bottom: 0.2em;
-}
-
 #header {
-  height: 6em;
+  height: 4em;
   min-width: 42em;
-  background-color: darkgrey;
+  background-color: #202b38;
   display: table;
   width: 100%;
+  text-align: center;
+}
+
+#titleImg {
+  max-width: 100%;
+  margin-right: 8em;
+  height: 6em;
+  vertical-align: bottom;
+  margin-top: 1em;
+}
+
+#headerBox {
+  width: 8em;
+  height: 100%;
+  background-color: darkgray;
+  display: table-cell;
 }
 
 #sidebar {
@@ -581,6 +607,7 @@ input.level {
   z-index: 1;
   background-color: rgb(32, 43, 56);
   padding: 1em;
+  padding-top: 0.4em;
 }
 
 #signup {
@@ -604,6 +631,12 @@ input.level {
   margin-left: 2em;
 }
 
+#characterBtn {
+  border: #fff;
+  border-style: ridge;
+  border-width: 2px;
+}
+
 #campaignForm, #characterForm {
   padding-top: 1em;
   width: 60%;
@@ -620,6 +653,14 @@ input.level {
   padding-left: 1.5em;
   border-style: solid;
   border-width: thin;
+}
+
+#bottomAnchor {
+  position: fixed;
+  bottom: 0;
+  height: 8em;
+  width: 8em;
+  background-color: darkgray;
 }
 
 #nameImg {
