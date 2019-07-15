@@ -122,7 +122,11 @@ class App extends Component {
       .then(chats => {
         if (chats.length) {
           this.props.setChats(chats)
-          chats.map(chat => chat.messages).forEach(list => this.props.setMessages(list))
+          chats.map(chat => chat.messages).forEach(list => {
+            if (!this.props.messages.map(m => m.id).includes(list[0].id)) {
+              this.props.setMessages(list)
+            }
+          })
         }
       })
       .then(() => this.displayWarning());
@@ -182,6 +186,7 @@ const mapStateToProps = state => {
   return {
     loadState: state.load.loading,
     chats: state.chat.chats,
+    messages: state.chat.messages,
     campaigns: state.campaign.campaigns,
     characterCampaigns: state.campaign.characterCampaigns,
     characters: state.character.characters

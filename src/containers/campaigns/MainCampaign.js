@@ -40,7 +40,7 @@ class MainCampaign extends Component {
         <CampaignButtons />
         <br />
         {
-          this.pageResults().campaigns.length !== 0 ?
+          this.pageResults().campaigns.length ?
             <Fragment>
               <h2 className='campaignHeader'>Campaigns you DM:</h2>
               <span className='campaignPageCount'>
