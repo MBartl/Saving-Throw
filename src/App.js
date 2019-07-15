@@ -123,7 +123,7 @@ class App extends Component {
         if (chats.length) {
           this.props.setChats(chats)
           chats.map(chat => chat.messages).forEach(list => {
-            if (!this.props.messages.map(m => m.id).includes(list[0].id)) {
+            if (list.length && !this.props.messages.map(m => m.id).includes(list[0].id)) {
               this.props.setMessages(list)
             }
           })

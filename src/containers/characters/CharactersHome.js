@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import MainCharacter from './MainCharacter';
 import CharacterShow from './CharacterShow';
-import NewCharacterForm from '../../components/NewCharacterForm';
+import NewCharacterForm from './NewCharacterForm';
 import Loader from '../../Loader';
 
 import { Route } from 'react-router-dom';

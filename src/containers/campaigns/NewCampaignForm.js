@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { URL, HEADERS, CHANGE_NAV, ADD_CAMPAIGN } from '../../constants'
+import { URL, HEADERS, CHANGE_NAV, ADD_CAMPAIGN, UPDATE_CHAT } from '../../constants'
 
 import CampaignButtons from '../../components/CampaignButtons';
 
@@ -33,10 +33,11 @@ class newCampaignForm extends Component {
     .then(res => res.json())
     .then(campaign => {
       if (campaign.errors) {
-        alert(campaign.errors)
+        alert(campaign.errors);
       } else {
-      this.props.addCampaign(campaign)
-      this.props.history.push('/campaigns')
+      this.props.addCampaign(campaign.campaign);
+      this.props.updateChat(campaign.chat);
+      this.props.history.push('/campaigns');
       }
     });
   };
@@ -67,6 +68,9 @@ const mapDispatchToProps = dispatch => {
     },
     addCampaign: (campaign) => {
       dispatch({ type: ADD_CAMPAIGN, payload: campaign })
+    },
+    updateChat: (chat) => {
+      dispatch({ type: UPDATE_CHAT, payload: chat })
     }
   };
 };

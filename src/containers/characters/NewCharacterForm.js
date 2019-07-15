@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import { URL, HEADERS, ADD_CHARACTER } from '../constants'
+import { URL, HEADERS, ADD_CHARACTER } from '../../constants'
 
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
