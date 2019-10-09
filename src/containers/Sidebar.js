@@ -64,7 +64,6 @@ class Sidebar extends Component {
             </Link>
           </Fragment>
         }
-        <div id='bottomAnchor'></div>
       </div>
     );
   };

@@ -415,14 +415,21 @@ class NewCharacterForm extends Component {
     while (points > 0) {
       let stat = Math.floor(Math.random()*6);
       if (stat > 2) {stat++};
-      if (newPoints[stat] > 13 && points === 1) {
-        stat === 0 ? stat++ : stat--
-        if (stat === 2) (stat--)
+
+      // Prevent last point from being spent on 2 cost increase
+      if (newPoints[stat] > 12 && points === 1) {
+        for (let j = 0; j < 7; j++) {
+          if (j === 3) {j++}
+          console.log(j, stat)
+          if (newPoints[j] < newPoints[stat]) {stat = j}
+        }
       }
-      // Prevent random stats from exceeding maximum
+
+      // Prevent random stats from exceeding new character maximum
       if (newPoints[stat]+1 > this.state.max[stat]) {
         stat = this.rerollStat(stat)
       };
+
       // Give preference to maxing stats
       if (newPoints[stat] === 8 && Math.floor(Math.random()*2) === 0) {
         stat = this.rerollStat(stat)
@@ -433,6 +440,7 @@ class NewCharacterForm extends Component {
 
       points--;
       if (newPoints[stat] > 13) {points--};
+      console.log(points)
     };
 
     // Set the state
@@ -445,12 +453,12 @@ class NewCharacterForm extends Component {
   }
 
   rerollStat = (stat) => {
-    const oldStat = stat
-    while (oldStat === stat) {
-      stat = Math.floor(Math.random()*6);
+    let newStat = stat
+    while (newStat === stat) {
+      newStat = Math.floor(Math.random()*6);
+      if (newStat > 2) {newStat++};
     }
-    if (stat > 2) (stat++)
-    return stat
+    return newStat
   }
 
   render() {
