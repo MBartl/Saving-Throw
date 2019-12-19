@@ -277,7 +277,9 @@ class NewCharacterForm extends Component {
       );
     });
 
-    this.adjustPoints(max, abilityScore);
+    const bonusDiff = this.sum(bonus)-this.sum(this.state.bonus)
+
+    this.adjustPoints(max, abilityScore, bonusDiff);
 
     this.setState({
       abilityScores: abilityScore,
@@ -290,6 +292,16 @@ class NewCharacterForm extends Component {
   // Ability score functions
   renderAbilityScore = (index) => {
     return this.state.abilityScores[index] + this.state.bonus[index];
+  };
+
+  sum = (array) => {
+    let statSum = 0;
+    for (let i = 0; i < array.length; i++) {
+      if (!isNaN(array[i])) {
+        statSum += array[i];
+      };
+    };
+    return statSum;
   };
 
   handleAbilityScoreChange = (e, ability) => {
@@ -316,7 +328,7 @@ class NewCharacterForm extends Component {
       if (newValue > oldValue) {newValue > 13 ? ptChange = -2 : ptChange = -1}
       else {newValue > 12 ? ptChange = 2 : ptChange = 1};
 
-      if (this.state.pointMode === 'Points' && this.state.points+ptChange < 0) {
+      if (this.state.pointMode === 'Points' && this.state.points+ptChange < 0 && newValue > oldValue) {
         alert('Not enough points');
         return;
       };
@@ -351,20 +363,42 @@ class NewCharacterForm extends Component {
     };
   };
 
-  // Adjust point buy points when changing race or subrace
-  adjustPoints(max, abilityScore) {
-    let pointAdj = 0;
-
+  // Adjust 'point buy' points when changing race or subrace
+  adjustPoints(max, abilityScore, bonusDiff) {
     const oldScores = this.state.abilityScores.map(ea => ea.value);
     const newScores = abilityScore.map(s => s.value);
-    oldScores.forEach((s, i) => s > max[i] ? pointAdj = pointAdj+((s-max[i])) : null);
 
-    oldScores.forEach((s, i) => {
-      return (
-        newScores[i] > oldScores[i] && newScores[i] > 13 ?
-        pointAdj = pointAdj-(newScores[i]-oldScores[i]) : null
-      );
-    });
+    function racePointAdjust(i, oldScores, newScores) {
+      let returnValue = 0;
+
+      if (oldScores[i] !== newScores[i]) {
+        returnValue += oldScores[i]-newScores[i];
+
+        if (oldScores[i] > newScores[i]) {
+          if (newScores[i] >= 13) {
+            returnValue += oldScores[i]-newScores[i];
+          } else if (newScores[i] >= 12 && oldScores[i]-2 === newScores[i]) {
+            returnValue += 1;
+          };
+        } else {
+          if (oldScores[i] >= 13) {
+            returnValue -= newScores[i]-oldScores[i];
+          } else if (oldScores[i] >= 12 && newScores[i]-2 === oldScores[i]) {
+            returnValue -= 1;
+          };
+        }
+      }
+
+      else {
+        returnValue = 0;
+      };
+
+      return returnValue;
+    };
+
+    let pointAdj = this.sum(oldScores.map((s, i) => {
+      return (racePointAdjust(i, oldScores, newScores));
+    })) + bonusDiff;
 
     this.setState({
       points: this.state.points+pointAdj

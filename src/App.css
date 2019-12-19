@@ -1,6 +1,6 @@
 html, #root, .App, body {
   width: 100%;
-  height: 100%;
+  height: -webkit-fill-available;
   max-width: none;
 }
 
@@ -623,8 +623,7 @@ input.level {
 }
 
 #sidebar {
-  height: -webkit-fill-available;
-  max-height: 100%;
+  height: 104%;
   width: 8em;
   float: left;
   background-color: darkgrey;
